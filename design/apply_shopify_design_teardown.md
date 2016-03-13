@@ -45,10 +45,10 @@
     - 登録を簡単にすること(学生番号+パスワード)
     - １回説明したら，質問の作成，検索ができるようになること
 4. Information Architectureの作成
-  - TODO : 画像貼る
+  - <img src="info_architecture/information_diagram.png" height=300 />
 5. Wireframes
-  - TODO : 画像貼る
+  - https://github.com/ishikota/TeachMe/tree/master/design/wireflames
 6. Inspiration boards
-  - TODO
+  - photoshopとか使えないので，割愛.(bootstrapで実装するときに微調整)
 7. Mockups and prototypes
-  - TODO : inivision URL
+  - https://projects.invisionapp.com/share/4D6G38K97#/screens/142127253
