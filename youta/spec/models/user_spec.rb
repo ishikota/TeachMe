@@ -48,10 +48,28 @@ describe User do
     end
   end
 
-  describe "that comment depends on user" do
+  describe "that comment lefts even if owner is destroyed" do
     let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086") }
     let!(:comment) { user.comments.create(content: "Teach Me !!")}
-    it { expect { user.destroy }.to change {Comment.count}.by(-1) }
+    it { expect { user.destroy }.not_to change {Comment.count} }
+  end
+
+  describe "that question is left even if its owner is destroyed" do
+    let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086") }
+    let!(:question) { user.questions.create(title: "Teach Me !!")}
+    it { expect { user.destroy }.not_to change {Question.count} }
+  end
+
+  describe "#comment" do
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086") }
+    context "on valid question" do
+      let(:question) { user.questions.create(title: "Teach Me !!")}
+      it { expect { user.comment(question, "First Comment!!") }.to change { Comment.where(user_id: user.id).count }.by(1) }
+    end
+    context "on invalid question" do
+      let(:question) { user.questions.new }
+      it { expect { user.comment(question, "First Comment!!") }.not_to change { Comment.where(user_id: user.id).count } }
+    end
   end
 
 end
