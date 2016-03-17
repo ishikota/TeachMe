@@ -48,4 +48,10 @@ describe User do
     end
   end
 
+  describe "that comment depends on user" do
+    let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086") }
+    let!(:comment) { user.comments.create(content: "Teach Me !!")}
+    it { expect { user.destroy }.to change {Comment.count}.by(-1) }
+  end
+
 end
