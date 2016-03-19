@@ -17,6 +17,14 @@ describe Lesson do
       it { expect { lesson.period = 7 }.not_to change { lesson.valid? } }
     end
   end
-
+  
+  describe "dependencies" do
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true) }
+    let(:question) { user.questions.create(title:"HelpMe!!", lesson_id: lesson.id) }
+    before { lesson.save }
+    describe "lesson has many questions" do
+      it { expect(lesson.questions).to include(question) }
+    end
+  end
 
 end
