@@ -10,7 +10,7 @@ require 'spec_helper'
 #     end
 #   end
 # end
-describe ImportHelper do
+describe LessonEditHelper do
   
   describe "Read student data from csv" do
     describe "should convert csv file to student_ids array" do

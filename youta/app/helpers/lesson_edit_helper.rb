@@ -1,4 +1,4 @@
-module ImportHelper
+module LessonEditHelper
   require 'csv'
 
 
