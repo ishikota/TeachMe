@@ -62,8 +62,9 @@ describe User do
 
   describe "#comment" do
     let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086") }
+    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
     context "on valid question" do
-      let(:question) { user.questions.create(title: "Teach Me !!")}
+      let(:question) { user.questions.create(title: "Teach Me !!", lesson_id: lesson.id)}
       it { expect { user.comment(question, "First Comment!!") }.to change { Comment.where(user_id: user.id).count }.by(1) }
     end
     context "on invalid question" do

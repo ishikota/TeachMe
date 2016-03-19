@@ -25,6 +25,9 @@ describe Lesson do
     describe "lesson has many questions" do
       it { expect(lesson.questions).to include(question) }
     end
+    describe "lesson has a tag" do
+      it { expect { lesson.tags.create(name: "tag") }.to change { Tag.count }.by(1) }
+    end
   end
 
 end
