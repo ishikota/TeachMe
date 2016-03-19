@@ -15,7 +15,7 @@ describe GoodRelationship do
     end
   end
   describe "dependencies" do
-    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true) }
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_digest: 'foobar') }
     let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
     let(:question) { user.questions.create(title:"HelpMe!!", lesson_id: lesson.id) }
     let!(:relation) { GoodRelationship.create(user_id: user.id, question_id: question.id) }

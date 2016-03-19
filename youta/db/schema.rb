@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319085309) do
+ActiveRecord::Schema.define(version: 20160319095124) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "content"
@@ -89,11 +89,12 @@ ActiveRecord::Schema.define(version: 20160319085309) do
   add_index "tags", ["lesson_id"], name: "index_tags_on_lesson_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",                       null: false
-    t.string   "student_id",                 null: false
-    t.boolean  "admin",      default: false, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.string   "name",                            null: false
+    t.string   "student_id",                      null: false
+    t.boolean  "admin",           default: false, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "password_digest"
   end
 
 end

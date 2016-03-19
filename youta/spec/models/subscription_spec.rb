@@ -15,7 +15,7 @@ describe Subscription do
 
 
   describe "dependencies" do
-    let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true) }
+    let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_digest: 'foobar') }
     let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
     let!(:relation) { Subscription.create(user_id: user.id, lesson_id: lesson.id) }
 

@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   validates :student_id, length: { is: 8 },
     format: { with: /\A[AB][0-9]{7}/ },
     uniqueness: { case_sensitive: false }
+  has_secure_password
+  validates :password, presence: true, length: { minimum: 6 }
 
   def comment(question, content)
     comments.create(question_id: question.id, content: content)

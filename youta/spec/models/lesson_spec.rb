@@ -19,7 +19,7 @@ describe Lesson do
   end
   
   describe "dependencies" do
-    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true) }
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_digest: 'foobar') }
     let(:question) { user.questions.create(title:"HelpMe!!", lesson_id: lesson.id) }
     before { lesson.save }
     describe "lesson has many questions" do
