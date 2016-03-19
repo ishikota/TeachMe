@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe EditorRelationship do
-  let(:relation) { EditorRelationship.new(user_id: 0, lesson_id: 0) }
+describe Subscription do
+  let(:relation) { Subscription.new(user_id: 0, lesson_id: 0) }
   describe "validation" do
     describe "when user_id is not present" do
       before { relation.user_id = nil }
@@ -13,10 +13,11 @@ describe EditorRelationship do
     end
   end
 
+
   describe "dependencies" do
     let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true) }
     let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
-    let!(:relation) { EditorRelationship.create(user_id: user.id, lesson_id: lesson.id) }
+    let!(:relation) { Subscription.create(user_id: user.id, lesson_id: lesson.id) }
 
     describe "that belongs to user" do
       it { expect(relation.user).to eq user }
@@ -27,17 +28,16 @@ describe EditorRelationship do
     end
 
     describe "that connect user and lesson" do
-      it { expect(user.lectures).to include(lesson) }
-      it { expect(lesson.editors).to include(user) }
+      it { expect(user.lessons).to include(lesson) }
+      it { expect(lesson.students).to include(user) }
     end
 
-    describe "that editor relationship is destroyed when user is destroyed" do
-      it { expect { user.destroy }.to change { EditorRelationship.count }.by(-1) }
+    describe "that subscription is destroyed when user is destroyed" do
+      it { expect { user.destroy }.to change { Subscription.count }.by(-1) }
     end
 
-    describe "that editor relationship is destroyed when lesson is destroyed" do
-      it { expect { lesson.destroy }.to change { EditorRelationship.count }.by(-1) }
+    describe "that subscription is destroyed when lesson is destroyed" do
+      it { expect { lesson.destroy }.to change { Subscription.count }.by(-1) }
     end
   end
-
 end
