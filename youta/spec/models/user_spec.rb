@@ -38,6 +38,11 @@ describe User do
         let(:sid) { "AB178086" }
         it { expect(user).not_to be_valid }
       end
+      context 'is already used' do
+        let(:sid) { "A1178086" }
+        before { User.create(name: name, student_id: sid) }
+        it { expect(user).not_to be_valid }
+      end
     end
   end
 
@@ -46,6 +51,12 @@ describe User do
     specify "admin is false when not supplied" do
       expect(user.admin).to be_false
     end
+  end
+
+  describe "before save should downcase student_id" do
+    let(:sid) { "A1178086" }
+    before { User.create(name: "Kota Ishimoto", student_id: sid) }
+    it { expect(User.where(student_id: sid.downcase)).to be_present }
   end
 
   describe "that comment lefts even if owner is destroyed" do
