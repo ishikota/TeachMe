@@ -8,7 +8,7 @@
 2. 投稿ボタンをクリック
 
 ## アプリ側のロジック
-user.post_question(lesson_id, title, tag, description)を呼ぶ
+`user.post_question(lesson_id, title, tag, description)を呼ぶ`
 
 0. userがlessonをsubscribeしていることをチェック
 1. questionの作成
