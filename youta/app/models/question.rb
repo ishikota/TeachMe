@@ -4,6 +4,8 @@ class Question < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :tag_relationships, dependent: :destroy
   has_many :tags, through: :tag_relationships
+  has_many :good_relationships, dependent: :destroy
+  has_many :good_people, through: :good_relationships, source: :user
   validates :title, presence: true
   validates :user_id, presence: true
   validates :lesson_id, presence: true
