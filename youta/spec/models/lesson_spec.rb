@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Lesson do
   let(:lesson) { Lesson.new(title: "sansu", day_of_week: 0, period: 1) }

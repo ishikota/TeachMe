@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe GoodRelationship do
   let(:relation) { GoodRelationship.new(user_id: 0, question_id: 0) }
