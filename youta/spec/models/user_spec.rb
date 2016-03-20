@@ -98,4 +98,39 @@ describe User do
     end
   end
 
+  describe "#post_question" do
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_digest: 'foobar') }
+    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    let(:tag) { Tag.create(name: "tashizan", lesson_id: lesson.id) }
+    let(:title) { "Please help me!!" }
+    let(:description) { "How to read file in java? Thanks in advance." }
+    it "should create new question with passed information" do
+      expect { user.post_question(lesson.id, title, description, tag) }.to change { Question.count }.by(1)
+      q = user.questions.find_by_title(title)
+      expect(q.lesson).to eq lesson
+      expect(q.comments.first.content).to eq description
+      expect(q.tags.first).to eq tag
+    end
+  end
+
+  describe "#good" do
+    let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_digest: 'foobar') }
+    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    let(:question) { user.questions.create(title: "Teach Me !!", lesson_id: lesson.id)}
+
+    describe "post" do
+      it { expect { user.post_good(question) }.to change { GoodRelationship.count }.by(1) }
+    end
+
+    describe "cancel" do
+      context "when relationship is not found" do
+        it { expect { user.cancel_good(question) }.to raise_error(ActiveRecord::RecordNotFound) }
+      end
+      context "when relationship is present" do
+        before { GoodRelationship.create(user_id: user.id, question_id: question.id) }
+        it { expect { user.cancel_good(question) }.to change { GoodRelationship.count }.by(-1) }
+      end
+    end
+  end
+
 end
