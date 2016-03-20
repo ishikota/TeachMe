@@ -44,4 +44,35 @@ describe LessonEditHelper do
     end
   end
 
+  describe "Update tag data" do
+    let(:tag1) { "tashizan" }
+    let(:tag2) { "hikizan" }
+    let(:tag3) { "kakezan" }
+    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    before {
+      Tag.create(name: tag1, lesson_id: lesson.id)
+      Tag.create(name: tag2, lesson_id: lesson.id)
+    }
+
+    describe "add new tag data" do
+      let(:src) { "#{tag1}, #{tag2}, #{tag3}" }
+      let!(:tags) { helper.read_csv_tags_for_lesson(lesson.id, src) }
+      it "should create only hikizan tag" do
+        expect(Tag.count).to eq (3)
+        expect(tags).to include(Tag.find_by(name: tag3))
+      end
+    end
+
+    describe "delete tag" do
+      let(:src) { "#{tag1}, #{tag3}" }
+      let!(:tags) { helper.read_csv_tags_for_lesson(lesson.id, src) }
+      it "should create kakezan tag and delete hikizan tag" do
+        expect(Tag.count).to eq 2
+        expect(tags).not_to include(Tag.find_by_name(tag2))
+        expect(tags).to include(Tag.find_by_name(tag3))
+      end
+    end
+
+  end
+
 end
