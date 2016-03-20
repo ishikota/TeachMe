@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LessonsController do
+describe LessonsController, type: :request do
 
   describe "GET 'index'" do
     before {
@@ -8,7 +8,7 @@ describe LessonsController do
       Lesson.create(title: "kokugo", day_of_week: 1, period: 2)
     }
     it "should assigns all lessons to @lessons" do
-      get 'index'
+      get '/lessons/index'
       expect(assigns(:lessons)).to eq Lesson.all
     end
   end

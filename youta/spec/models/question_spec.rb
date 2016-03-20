@@ -7,7 +7,7 @@ describe Question do
 
   describe "default value" do
     it { expect(question.user_id).to eq user.id }
-    it { expect(question.solved).to be_false }
+    it { expect(question.solved).to be_falsey }
   end
 
   describe "validation" do

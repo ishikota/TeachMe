@@ -63,7 +63,7 @@ describe User do
   describe "default value" do
     let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", password: "foobar", password_digest: "foobar") }
     specify "admin is false when not supplied" do
-      expect(user.admin).to be_false
+      expect(user.admin).to be_falsey
     end
   end
 
