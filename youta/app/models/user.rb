@@ -26,4 +26,12 @@ class User < ActiveRecord::Base
     return q
   end
 
+  def post_good(question)
+    good_relationships.create(question_id: question.id)
+  end
+
+  def cancel_good(question)
+    good_relationships.find(question.id).destroy
+  end
+
 end
