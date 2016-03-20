@@ -13,4 +13,12 @@ describe LessonsController, type: :request do
     end
   end
 
+  describe "GET 'new'" do
+    it "should assigns empty lesson object to @lesson" do
+      get '/lessons/new'
+      expect(assigns(:lesson)).to be_a(Lesson)
+    end
+  end
+
+
 end
