@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.new(user_params)
     if @lesson.save
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
-      read_csv_student_id(params[:lesson][:students].path, "foobar")
+      read_csv_student_id(params[:lesson][:students_csv].path, "foobar")
       render 'index'
     else
       render 'new'

@@ -24,7 +24,7 @@ describe LessonsController, type: :request do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
     describe "when params is correct" do
-      let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students: file_path } } }
+      let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
       it "should create new lesson and attache passed tags and students and go index page" do
         post lessons_path, params
         expect(Lesson.count).to eq 1
