@@ -76,5 +76,13 @@ describe LessonsController, type: :request do
     end
   end
 
+  describe "#destroy" do
+    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    it "should delete sansu lesson" do
+      delete lesson_path(lesson)
+      expect(Lesson.exists?(lesson.id)).to be_falsey
+      expect(response).to redirect_to lessons_path
+    end
+  end
 
 end
