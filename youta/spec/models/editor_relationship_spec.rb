@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe EditorRelationship do
   let(:relation) { EditorRelationship.new(user_id: 0, lesson_id: 0) }

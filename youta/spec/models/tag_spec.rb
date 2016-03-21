@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Tag do
   let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }

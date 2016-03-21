@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TagRelationship do
   let(:relation) { TagRelationship.new(tag_id: 0, question_id: 0) }

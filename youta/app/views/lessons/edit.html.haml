@@ -1,0 +1,19 @@
+%h1= "#{@lesson.title} を編集する"
+
+%div
+  = form_for(@lesson) do |f|
+    = f.label :day_of_week, "曜日"
+    = f.select :day_of_week, [['月曜',0],['火曜',1],['水曜',2],['木曜',3],['金曜',4]]
+    = f.label :period, "時間"
+    = f.select :period, [['1限',1],['2限',2],['3限',3],['4限',4],['5限',5],['6限',6]]
+    %br
+
+    = f.label :title, "授業名"
+    = f.text_field :title
+    %br
+
+    = f.label :tags, "授業内容(タグ)"
+    = f.text_field :tags, value: @lesson.tags_to_str
+    %br
+
+    = f.submit "更新する"

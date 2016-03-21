@@ -1,0 +1,10 @@
+# 必要な画面
+- ログイン(SessionController#create)
+- 管理画面(AdminController#index)
+- 授業一覧(LessonController#index)
+- 授業作成(LessonController#create)
+- 授業編集画面(LessonController#edit)
+- 質問一覧(QuestionController#index)
+- 質問作成(QuestionController#create)
+- コメント一覧(CommentController#index)
+- マイページ(UserController#index)

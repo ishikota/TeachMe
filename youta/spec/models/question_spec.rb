@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Question do
   let(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_digest: 'foobar') }
@@ -7,7 +7,7 @@ describe Question do
 
   describe "default value" do
     it { expect(question.user_id).to eq user.id }
-    it { expect(question.solved).to be_false }
+    it { expect(question.solved).to be_falsey }
   end
 
   describe "validation" do

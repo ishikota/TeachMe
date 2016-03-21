@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Lesson do
   let(:lesson) { Lesson.new(title: "sansu", day_of_week: 0, period: 1) }
@@ -27,6 +27,32 @@ describe Lesson do
     end
     describe "lesson has a tag" do
       it { expect { lesson.tags.create(name: "tag") }.to change { Tag.count }.by(1) }
+    end
+  end
+
+  describe "string converter" do
+    it "should convert day_of_week flg to string" do
+      expect(Lesson.day_of_week_to_str(0)).to eq '月曜'
+      expect(Lesson.day_of_week_to_str(4)).to eq '金曜'
+      expect(Lesson.day_of_week_to_str(5)).to eq nil
+    end
+    it "should convert period flg to string" do
+      expect(Lesson.period_to_str(0)).to eq nil
+      expect(Lesson.period_to_str(1)).to eq '1限'
+    end
+    describe "convert attached tags to comma separated string" do
+      let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+
+      context "when no tag is attached" do
+        it { expect(lesson.tags_to_str).to be_empty }
+      end
+      context "when two tag is attached" do
+        before {
+          lesson.tags.create(name: "tashizan")
+          lesson.tags.create(name: "hikizan")
+        }
+        it { expect(lesson.tags_to_str).to eq 'tashizan,hikizan' }
+      end
     end
   end
 
