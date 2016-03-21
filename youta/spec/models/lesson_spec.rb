@@ -30,4 +30,16 @@ describe Lesson do
     end
   end
 
+  describe "const converter" do
+    it "should convert day_of_week flg to string" do
+      expect(Lesson.day_of_week_to_str(0)).to eq '月曜'
+      expect(Lesson.day_of_week_to_str(4)).to eq '金曜'
+      expect(Lesson.day_of_week_to_str(5)).to eq nil
+    end
+    it "should convert period flg to string" do
+      expect(Lesson.period_to_str(0)).to eq nil
+      expect(Lesson.period_to_str(1)).to eq '1限'
+    end
+  end
+
 end

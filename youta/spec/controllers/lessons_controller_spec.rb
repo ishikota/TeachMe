@@ -30,7 +30,7 @@ describe LessonsController, type: :request do
         expect(Lesson.count).to eq 1
         expect(Tag.count).to eq 2
         expect(User.count).to eq 3
-        expect(response).to render_template(:index)
+        expect(response).to redirect_to lessons_path
       end
     end
     context "when params is not enough" do

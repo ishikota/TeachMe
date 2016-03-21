@@ -12,7 +12,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
       read_csv_student_id(params[:lesson][:students_csv].path, "foobar")
-      render 'index'
+      redirect_to lessons_path
     else
       render 'new'
     end
