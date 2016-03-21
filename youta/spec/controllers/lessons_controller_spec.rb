@@ -50,5 +50,31 @@ describe LessonsController, type: :request do
     end
   end
 
+  describe "#update" do
+    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    let!(:tashizan) { lesson.tags.create(name:"tashizan") }
+    let!(:hikizan) { lesson.tags.create(name:"hikizan") }
+
+    describe "when update param is valid" do
+      let(:params) { { lesson: { title: "sugaku", tags: "tashizan, kakezan" } } }
+      it "should update sansu to sugaku" do
+        put lesson_path(lesson), params
+        lesson.reload
+        expect(lesson.title).to eq 'sugaku'
+        expect(lesson.tags.size).to eq 2
+        expect(lesson.tags).to include(tashizan)
+        expect(lesson.tags).not_to include(hikizan)
+        expect(response).to render_template(:edit)
+      end
+    end
+    describe "when update params is invalid" do
+      let(:params) { { lesson: { day_of_week: -1, title: "" } } }
+      it "should render edit page again" do
+        put lesson_path(lesson), params
+        expect(response).to render_template(:edit)
+      end
+    end
+  end
+
 
 end

@@ -20,6 +20,15 @@ class LessonsController < ApplicationController
   def edit
     @lesson = Lesson.find(params[:id])
   end
+  def update
+    @lesson = Lesson.find(params[:id])
+    if @lesson.update_attributes(user_params)
+      read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
+      render 'edit'
+    else
+      render 'edit'
+    end
+  end
 
   private
 
