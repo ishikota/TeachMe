@@ -33,7 +33,7 @@ feature "Lessons", :type => :feature do
   end
 
   it 'creates new class' do
-    visit lessons_new_path
+    visit new_lesson_path
     expect(page).to have_content '授業を作成する'
     select '火曜', from: "曜日"
     select '3限', from: "時間"

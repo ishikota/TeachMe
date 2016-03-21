@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  get 'lessons/index', as: 'lessons'
-  get 'lessons/new'
-  post 'lessons/index' => 'lessons#create'
+  resources :lessons
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

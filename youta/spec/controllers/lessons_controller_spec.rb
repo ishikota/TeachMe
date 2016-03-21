@@ -8,7 +8,7 @@ describe LessonsController, type: :request do
       Lesson.create(title: "kokugo", day_of_week: 1, period: 2)
     }
     it "should assigns all lessons to @lessons" do
-      get '/lessons/index'
+      get lessons_path
       expect(assigns(:lessons)).to eq Lesson.all
     end
   end
