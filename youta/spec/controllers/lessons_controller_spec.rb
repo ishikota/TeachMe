@@ -42,5 +42,13 @@ describe LessonsController, type: :request do
     end
   end
 
+  describe "#edit" do
+    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    it "should assign sansu to @lesson" do
+      get edit_lesson_path(lesson)
+      expect(assigns(:lesson)).to eq lesson
+    end
+  end
+
 
 end

@@ -46,4 +46,20 @@ feature "Lessons", :type => :feature do
     expect(Tag.count).to eq 2
     expect(User.count).to eq 3
   end
+
+  describe "edit sansu lesson" do
+    let(:lesson) { Lesson.create(title: "算数", day_of_week: 1, period: 2) }
+    before {
+      lesson.tags.create(name: "足し算")
+      lesson.tags.create(name: "引き算")
+    }
+    it "should display sansu lesson data on form by default" do
+      visit edit_lesson_path(lesson)
+      expect(page).to have_select '曜日', selected: '火曜'
+      expect(page).to have_select '時間', selected: '2限'
+      expect(page).to have_field '授業名', with: '算数'
+      expect(page).to have_field '授業内容(タグ)', with: '足し算,引き算'
+      expect(page).not_to have_field '受講者'
+    end
+  end
 end

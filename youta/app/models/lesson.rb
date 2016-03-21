@@ -18,6 +18,10 @@ class Lesson < ActiveRecord::Base
     period.to_s + '限' unless period == 0
   end
 
+  def tags_to_str
+    tags.map { |tag| tag.name }.join(',')
+  end
+
   private
     DAY_OF_WEEK_MAP = ['月曜','火曜','水曜','木曜','金曜']
 
