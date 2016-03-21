@@ -1,2 +1,3 @@
-%h1 Questions#index
-%p Find me in app/views/questions/index.html.haml
+%h1= "#{@lesson.title} の質問"
+= link_to '質問する', controller: :questions, action: :new
+= render(@questions) || "まだ質問が投稿されていません．"
