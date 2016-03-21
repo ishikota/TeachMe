@@ -17,7 +17,7 @@
     %br
 
     = f.label :tags, "授業内容(タグ)"
-    = f.text_field :tags
+    = f.text_field :tags, value: @lesson.tags_to_str
     %br
 
     = f.submit "作成する"

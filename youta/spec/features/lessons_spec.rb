@@ -35,6 +35,7 @@ feature "Lessons", :type => :feature do
   it 'creates new class' do
     visit new_lesson_path
     expect(page).to have_content '授業を作成する'
+    expect(page).to have_field '授業内容(タグ)', with: ''
     select '火曜', from: "曜日"
     select '3限', from: "時間"
     fill_in '授業名', with: '情報理工学演習'
