@@ -38,12 +38,12 @@ feature "Questions", type: :feature do
 
   describe "new page" do
     it "should create new question" do
-      pending "Yet implemented create action"
       visit new_lesson_question_path(lesson)
       expect(page).to have_content "#{lesson.title} の質問の作成"
       fill_in 'タイトル', with: '5-2が分かりません'
       select 'hikizan', from: '授業項目'
       fill_in '詳細', with: '引き算ってなんですか?'
+      pending "Yet implemented show action"
       click_button '質問する'
 
       expect(page).to have_content lesson.title
