@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'login' => 'sessions#new'
+  post 'login' => 'sessions#create'
+  delete 'logout' => 'sessions#destroy'
+
   resources :lessons
 
   # The priority is based upon order of creation: first created -> highest priority.
