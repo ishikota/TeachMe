@@ -4,9 +4,9 @@ RSpec.describe QuestionsController, :type => :request do
   let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar') }
   let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
   let!(:tag) { lesson.tags.create(name: "tashizan") }
+  let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
 
   describe "GET index" do
-    let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
     let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
 
     it "assigns all questions to @questions" do
@@ -40,5 +40,14 @@ RSpec.describe QuestionsController, :type => :request do
       expect(response).to redirect_to lesson_question_path(lesson.id, question.id)
     end
   end
+
+  describe "#show" do
+    it "should display question about Build error" do
+      get lesson_question_path(lesson, question1)
+      expect(assigns(:lesson)).to eq lesson
+      expect(assigns(:question)).to eq question1
+    end
+  end
+
 
 end

@@ -23,4 +23,9 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def show
+    @lesson = Lesson.find(params[:lesson_id])
+    @question = Question.find(params[:id])
+  end
+
 end
