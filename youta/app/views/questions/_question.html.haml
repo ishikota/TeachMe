@@ -1,0 +1,5 @@
+%div
+  %span= question.title
+  - question.tags.each do |tag|
+    %span= tag.name
+  %span= "#{question.user.name} さんが質問しました"

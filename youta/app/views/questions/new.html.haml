@@ -1,0 +1,17 @@
+%h1= "#{@lesson.title} の質問の作成"
+
+%div
+  = form_for([@lesson, @question]) do |f|
+    = f.label :title, "タイトル"
+    = f.text_field :title
+    %br
+
+    = f.label :tags, "授業項目"
+    = f.select :tags, @lesson.tags.reduce([]) { |memo, tag| memo<<[tag.name, tag.id] }
+    %br
+
+    = label :comment, :content, "詳細"
+    = text_field :comment, :content
+    %br
+
+    = f.submit "質問する"
