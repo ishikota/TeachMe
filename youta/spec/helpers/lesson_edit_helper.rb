@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # Specs in this file have access to a helper object that includes
 # the ImportHelper. For example:
@@ -10,7 +10,7 @@ require 'spec_helper'
 #     end
 #   end
 # end
-describe LessonEditHelper do
+describe LessonEditHelper, type: :helper do
   
   describe "Read student data from csv" do
     describe "should convert csv file to student_ids array" do
@@ -25,6 +25,7 @@ describe LessonEditHelper do
     it "should convert student_ids to User object array" do
       students = helper.send(:import_students, student_ids, password)
       expect(User.count).to eq student_ids.size
+      expect(students.first.authenticate(password)).to be_truthy
       students.each_with_index { |student, idx|
         expect(student.student_id).to eq student_ids[idx].downcase
       }
