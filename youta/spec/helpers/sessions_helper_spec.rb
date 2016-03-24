@@ -11,5 +11,24 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe SessionsHelper, :type => :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let!(:user) {
+    User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_confirmation: 'foobar')
+  }
+  describe "#log_in" do
+    it "should save user id to session" do
+      helper.log_in(user)
+      expect(session[:user_id]).to eq user.id
+    end
+  end
+  describe "#current_user" do
+    context "not logged in yet" do
+      it { expect(helper.current_user).to be_nil }
+      it { expect(helper.logged_in?).to be_falsey }
+    end
+    context "after logged in" do
+      before { helper.log_in user }
+      it { expect(helper.current_user).to eq user }
+      it { expect(helper.logged_in?).to be_truthy }
+    end
+  end
 end
