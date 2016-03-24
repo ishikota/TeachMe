@@ -43,7 +43,6 @@ feature "Questions", type: :feature do
       fill_in 'タイトル', with: '5-2が分かりません'
       select 'hikizan', from: '授業項目'
       fill_in '詳細', with: '引き算ってなんですか?'
-      pending "Yet implemented show action"
       click_button '質問する'
 
       expect(page).to have_content lesson.title
