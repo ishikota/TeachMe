@@ -13,6 +13,7 @@ feature 'Sessions', type: :feature do
       fill_in 'パスワード', with: 'foobar'
       click_button 'ログイン'
       expect(page).to have_content '授業一覧'
+      expect(page).to have_link 'ログアウト', href: logout_path
     end
 
     it "should failed to login" do
@@ -21,6 +22,7 @@ feature 'Sessions', type: :feature do
       fill_in 'パスワード', with: 'barfoo'
       click_button 'ログイン'
       expect(page).to have_content 'ログインが必要です.'
+      expect(page).to have_link 'ログイン', href: login_path
     end
   end
 end
