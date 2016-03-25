@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :questions
   end
 
-  resources :users, only: :show
+  resources :users, only: [:show, :edit]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
