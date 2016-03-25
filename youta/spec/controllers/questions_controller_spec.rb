@@ -42,6 +42,11 @@ RSpec.describe QuestionsController, :type => :request do
   end
 
   describe "#show" do
+    let(:params) { { session: { student_id: "A1178086", password: 'foobar' } } }
+    before {
+      post login_path, params
+    }
+
     it "should display question about Build error" do
       get lesson_question_path(lesson, question1)
       expect(assigns(:lesson)).to eq lesson

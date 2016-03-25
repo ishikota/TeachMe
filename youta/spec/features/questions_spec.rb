@@ -52,20 +52,27 @@ feature "Questions", type: :feature do
 
   describe "#show" do
     let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    let!(:tag) { question.tag_relationships.create(tag_id: tag_tashizan.id) }
+    let!(:comment) { user.comments.create(question_id: question.id, content: "Did you try clean build?") }
+    before { visit lesson_question_path(lesson, question) }
 
     it "should have content about question" do
-      visit lesson_question_path(lesson, question)
       expect(page).to have_content question.title
       expect(page).to have_content question.user.name
     end
 
     it "should display comment on question" do
-      comment = user.comments.create(question_id: question.id, content: "Did you try clean build?")
-      visit lesson_question_path(lesson, question)
       expect(page).to have_selector 'li', count:1
     end
-      
+
+    describe "#comment" do
+      let(:content) { 'I tried clean build but ...' }
+      it "should post comment" do
+        fill_in 'comment_content', with: content
+        click_button 'コメント'
+        expect(page).to have_selector 'li', count:2
+        expect(page).to have_content content
+      end
+    end
   end
 
 end
