@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :lessons do
     resources :questions
   end
+  resources :comments, only: :create
 
   resources :users, only: [:show, :edit, :update]
 
