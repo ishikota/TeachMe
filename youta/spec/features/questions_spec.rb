@@ -24,8 +24,8 @@ feature "Questions", type: :feature do
   end
 
   describe "index page" do
+    let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
     before {
-      question = user.questions.create(title:"Build error", lesson_id: lesson.id)
       question.tag_relationships.create(tag_id: tag_tashizan.id)
     }
     it "should have question about 'Build error'" do
@@ -33,6 +33,7 @@ feature "Questions", type: :feature do
       expect(page).to have_content 'Build error'
       expect(page).to have_content 'tashizan'
       expect(page).to have_content 'Kota Ishimoto さんが質問しました'
+      expect(page).to have_link "Build error", href: lesson_question_path(lesson, question)
     end
   end
 

@@ -1,5 +1,5 @@
 %div
-  %span= question.title
+  = link_to question.title, lesson_question_path(question.lesson, question)
   - question.tags.each do |tag|
     %span= tag.name
   %span= "#{question.user.name} さんが質問しました"
