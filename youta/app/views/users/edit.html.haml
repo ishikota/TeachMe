@@ -1,0 +1,12 @@
+%h1 登録情報の編集
+
+%div
+  = form_for(@user) do |f|
+    = f.hidden_field :student_id, value: @user.student_id
+    = f.label :name, '名前'
+    = f.text_field :name
+    = f.label :password, 'パスワード'
+    = f.password_field :password
+    = f.label :password_confirmation, 'パスワードの確認'
+    = f.password_field :password_confirmation
+    = f.submit '更新'

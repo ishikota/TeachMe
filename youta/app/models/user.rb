@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :good_questions, through: :good_relationships, source: :question
   validates :name, presence: true
   validates :student_id, length: { is: 8 },
-    format: { with: /\A[AB][0-9]{7}/ },
+    format: { with: /\A[ABab][0-9]{7}/ },
     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
