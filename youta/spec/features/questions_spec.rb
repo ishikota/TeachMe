@@ -50,5 +50,22 @@ feature "Questions", type: :feature do
     end
   end
 
+  describe "#show" do
+    let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
+    let!(:tag) { question.tag_relationships.create(tag_id: tag_tashizan.id) }
+
+    it "should have content about question" do
+      visit lesson_question_path(lesson, question)
+      expect(page).to have_content question.title
+      expect(page).to have_content question.user.name
+    end
+
+    it "should display comment on question" do
+      comment = user.comments.create(question_id: question.id, content: "Did you try clean build?")
+      visit lesson_question_path(lesson, question)
+      expect(page).to have_selector 'li', count:1
+    end
+      
+  end
 
 end
