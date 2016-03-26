@@ -23,6 +23,12 @@ describe LessonsController, type: :request do
   describe "#create" do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
+    before {
+      user = User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
+      params = { session: { student_id: "A1178086", password: "foobar" } }
+      post login_path, params
+    }
+
     describe "when params is correct" do
       let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
       it "should create new lesson and attache passed tags and students and go index page" do

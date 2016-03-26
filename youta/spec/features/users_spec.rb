@@ -42,4 +42,13 @@ feature "Users", :type => :feature do
     end
   end
 
+  describe "#manage" do
+    let!(:lecture) { user.lectures.create(title: 'sansu', day_of_week: 0, period: 1) }
+    it "should display his lecture" do
+      visit management_path
+      expect(page).to have_content lecture.title
+      expect(page).to have_link '授業を追加', href: new_lesson_path
+    end
+  end
+
 end
