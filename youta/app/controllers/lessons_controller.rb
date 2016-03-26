@@ -9,7 +9,7 @@ class LessonsController < ApplicationController
   end
   def create
     @lesson = Lesson.new(user_params)
-    if @lesson.save
+    if params[:lesson][:students_csv].present? && @lesson.save
       EditorRelationship.create(lesson_id: @lesson.id, user_id: current_user.id)
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
       students = read_csv_student_id(params[:lesson][:students_csv].path, "foobar")

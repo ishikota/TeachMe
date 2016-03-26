@@ -23,14 +23,13 @@ describe LessonsController, type: :request do
   describe "#create" do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
+    let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
     before {
       User.create(name: "dummy taro", student_id: "A1111111", admin: true, password: 'foobar', password_confirmation: 'foobar')
-      params = { session: { student_id: "A1111111", password: "foobar" } }
-      post login_path, params
+      post login_path, { session: { student_id: "A1111111", password: "foobar" } }
     }
 
     describe "when params is correct" do
-      let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
       it "should attach tag on new lesson and go lesson page" do
           post lessons_path, params
           lesson = Lesson.find_by_title("sansu")
@@ -56,10 +55,19 @@ describe LessonsController, type: :request do
     end
 
     describe "when params is not enough" do
-      let(:params) { { lesson: { day_of_week: 0, period: 1, title: "", tags: "tag1,tag2" } } }
-      it "should redirect to lesson#new" do
-        post lessons_path, params
-        expect(response).to render_template(:new)
+      context "lesson parameter is invalid" do
+        before { params[:lesson][:title] = "" }
+        it "should redirect to lesson#new" do
+          expect { post lessons_path, params }.not_to change { Lesson.count }
+          expect(response).to render_template(:new)
+        end
+      end
+      context "no students is specified" do
+        before { params[:lesson][:students_csv] = nil }
+        it "should not create new lesson" do
+          expect { post lessons_path, params }.not_to change { Lesson.count }
+          expect(response).to render_template(:new)
+        end
       end
     end
   end
