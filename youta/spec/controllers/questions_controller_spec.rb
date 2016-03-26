@@ -9,10 +9,9 @@ RSpec.describe QuestionsController, :type => :request do
   describe "GET index" do
     let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
 
-    it "assigns all questions to @questions" do
+    it "assigns lesson to @lesson" do
       get lesson_questions_path(lesson)
       expect(assigns(:lesson)).to eq lesson
-      expect(assigns(:questions)).to eq Question.all
     end
   end
 
