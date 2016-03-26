@@ -32,20 +32,35 @@ feature "Lessons", :type => :feature do
 
   end
 
-  it 'creates new class' do
-    visit new_lesson_path
-    expect(page).to have_content '授業を作成する'
-    expect(page).to have_field '授業内容(タグ)', with: ''
-    select '火曜', from: "曜日"
-    select '3限', from: "時間"
-    fill_in '授業名', with: '情報理工学演習'
-    fill_in '授業内容(タグ)', with: 'ファイルの読み書き,サーバクライアント通信'
-    attach_file '受講者', "#{Rails.root}/spec/fixtures/lecture_students.csv"
-    click_button '作成する'
+  describe "#new" do
+    let!(:user) {
+      User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
+    }
+    before {
+      visit login_path
+      fill_in '学生番号', with: user.student_id
+      fill_in 'パスワード', with: user.password
+      click_button 'ログイン'
+      visit new_lesson_path
+    }
 
-    expect(Lesson.count).to eq 1
-    expect(Tag.count).to eq 2
-    expect(User.count).to eq 3
+    describe 'creates new lesson' do
+      before {
+        expect(page).to have_content '授業を作成する'
+        select '火曜', from: "曜日"
+        select '3限', from: "時間"
+        fill_in '授業名', with: '情報理工学演習'
+        fill_in '授業内容(タグ)', with: 'ファイルの読み書き,サーバクライアント通信'
+        attach_file '受講者', "#{Rails.root}/spec/fixtures/lecture_students.csv"
+        click_button '作成する'
+      }
+      specify "new lesson is created" do
+        expect(page).to have_selector 'li', count:1
+        expect(Tag.count).to eq 2
+        expect(User.count).to eq 3
+        expect(EditorRelationship.count).to eq 1
+      end
+    end
   end
 
   describe "edit sansu lesson" do
