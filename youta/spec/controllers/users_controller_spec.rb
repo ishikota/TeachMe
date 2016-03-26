@@ -30,5 +30,13 @@ RSpec.describe UsersController, :type => :controller do
     end
   end
 
+  describe "#management" do
+    before { session[:user_id] = user.id }
+    it "should assign user's lectures" do
+      get 'manage'
+      expect(assigns(:user)).to eq user
+    end
+  end
+
 
 end
