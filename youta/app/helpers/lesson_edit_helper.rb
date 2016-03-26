@@ -22,7 +22,7 @@ module LessonEditHelper
       student_ids.map { |student_id| 
         User.create(student_id: student_id, name: def_name,
                     password: initial_password, password_confirmation: initial_password)
-      }.select { |student| !student.blank? }
+      }.select { |student| student.valid? }
     end
 
     def read_student_from_csv(file_path)

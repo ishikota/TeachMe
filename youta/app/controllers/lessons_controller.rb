@@ -12,7 +12,10 @@ class LessonsController < ApplicationController
     if @lesson.save
       EditorRelationship.create(lesson_id: @lesson.id, user_id: current_user.id)
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
-      read_csv_student_id(params[:lesson][:students_csv].path, "foobar")
+      students = read_csv_student_id(params[:lesson][:students_csv].path, "foobar")
+      students.each { |student|
+        student.subscriptions.create(lesson_id: @lesson.id)
+      }
       redirect_to lessons_path
     else
       render 'new'

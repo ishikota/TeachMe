@@ -24,18 +24,18 @@ describe LessonsController, type: :request do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
     before {
-      user = User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
-      params = { session: { student_id: "A1178086", password: "foobar" } }
+      user = User.create(name: "dummy taro", student_id: "A1111111", admin: true, password: 'foobar', password_confirmation: 'foobar')
+      params = { session: { student_id: "A1111111", password: "foobar" } }
       post login_path, params
     }
 
     describe "when params is correct" do
       let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
+      before { post lessons_path, params }
       it "should create new lesson and attache passed tags and students and go index page" do
-        post lessons_path, params
-        expect(Lesson.count).to eq 1
-        expect(Tag.count).to eq 2
-        expect(User.count).to eq 3
+        lesson = Lesson.find_by_title("sansu")
+        expect(lesson.tags.count).to eq 2
+        expect(lesson.students.size).to eq 3
         expect(response).to redirect_to lessons_path
       end
     end
