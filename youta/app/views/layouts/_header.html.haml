@@ -1,5 +1,8 @@
 %div
+  %span= link_to 'Youta', root_path
   - if logged_in?
+    = link_to "マイページ", user_path(current_user)
     = link_to "ログアウト", logout_path, method: :delete
+    = link_to '管理画面', management_path
   - else
     = link_to "ログイン", login_path, method: :get
