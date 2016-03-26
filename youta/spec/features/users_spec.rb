@@ -13,10 +13,15 @@ feature "Users", :type => :feature do
   }
 
   describe "#show" do
+    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 1, period:1) }
+    before {
+      user.subscriptions.create(lesson_id: lesson.id)
+    }
     it 'should display user information' do
       visit user_path(user)
       expect(page).to have_content user.name
       expect(page).to have_link '編集'
+      expect(page).to have_link nil, href:lesson_questions_path(lesson)
     end
   end
 
