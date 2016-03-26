@@ -68,14 +68,21 @@ feature "Lessons", :type => :feature do
     before {
       lesson.tags.create(name: "足し算")
       lesson.tags.create(name: "引き算")
+      visit edit_lesson_path(lesson)
     }
     it "should display sansu lesson data on form by default" do
-      visit edit_lesson_path(lesson)
       expect(page).to have_select '曜日', selected: '火曜'
       expect(page).to have_select '時間', selected: '2限'
       expect(page).to have_field '授業名', with: '算数'
       expect(page).to have_field '授業内容(タグ)', with: '足し算,引き算'
-      expect(page).not_to have_field '受講者'
+      expect(page).to have_field '受講者の追加'
+    end
+
+    describe "append new user to lesson" do
+      it "should create new subscription relationships" do
+        attach_file '受講者の追加', "#{Rails.root}/spec/fixtures/lecture_students.csv"
+        expect { click_button '更新する' }.to change { lesson.students.count }.from(0).to(3)
+      end
     end
   end
 end

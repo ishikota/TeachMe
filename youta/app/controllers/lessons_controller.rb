@@ -9,13 +9,12 @@ class LessonsController < ApplicationController
   end
   def create
     @lesson = Lesson.new(user_params)
-    if params[:lesson][:students_csv].present? && @lesson.save
+    students_csv = params[:lesson][:students_csv]
+    if students_csv.present? && @lesson.save
       EditorRelationship.create(lesson_id: @lesson.id, user_id: current_user.id)
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
-      students = read_csv_student_id(params[:lesson][:students_csv].path, "foobar")
-      students.each { |student|
-        student.subscriptions.create(lesson_id: @lesson.id)
-      }
+      students = read_csv_student_id(students_csv.path, "foobar")
+      make_subscription(students)
       redirect_to lessons_path
     else
       render 'new'
@@ -28,6 +27,11 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     if @lesson.update_attributes(user_params)
       read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
+      students_csv = params[:lesson][:students_csv]
+      if students_csv.present?
+        students = read_csv_student_id(students_csv.path, "foobar")
+        make_subscription(students)
+      end
       render 'edit'
     else
       render 'edit'
@@ -39,6 +43,12 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def make_subscription(students)
+      students.each { |student|
+        student.subscriptions.create(lesson_id: @lesson.id)
+      }
+    end
 
     def user_params
       params.require(:lesson).permit(:day_of_week, :period, :title)
