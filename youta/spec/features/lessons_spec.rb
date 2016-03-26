@@ -83,6 +83,12 @@ feature "Lessons", :type => :feature do
         attach_file '受講者の追加', "#{Rails.root}/spec/fixtures/lecture_students.csv"
         expect { click_button '更新する' }.to change { lesson.students.count }.from(0).to(3)
       end
+      it "should not create duplicate subscriptions" do
+        attach_file '受講者の追加', "#{Rails.root}/spec/fixtures/lecture_students.csv"
+        expect { click_button '更新する' }.to change { lesson.students.count }.from(0).to(3)
+        attach_file '受講者の追加', "#{Rails.root}/spec/fixtures/lecture_students.csv"
+        expect { click_button '更新する' }.not_to change { lesson.students.count }
+      end
     end
   end
 end
