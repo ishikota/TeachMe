@@ -1,2 +1,3 @@
 %p= @user.name
 = link_to '編集', edit_user_path(@user)
+= render(partial: @user.lessons, locals: { item_link: method(:lesson_questions_path) })

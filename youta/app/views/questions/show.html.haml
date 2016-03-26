@@ -1,4 +1,4 @@
-= link_to "#{@lesson.title} の質問一覧に戻る", lesson_question_path(@lesson, @question)
+= link_to "#{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
 = @question.title
 = @question.user.name
 = render @question.comments

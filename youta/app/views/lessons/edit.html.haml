@@ -12,6 +12,12 @@
     = f.text_field :title
     %br
 
+    = link_to '受講者一覧', students_lesson_path(@lesson)
+
+    = f.label :students_csv, "受講者の追加"
+    = f.file_field :students_csv
+    %br
+
     = f.label :tags, "授業内容(タグ)"
     = f.text_field :tags, value: @lesson.tags_to_str
     %br
