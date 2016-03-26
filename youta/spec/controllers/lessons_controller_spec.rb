@@ -24,22 +24,38 @@ describe LessonsController, type: :request do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
     before {
-      user = User.create(name: "dummy taro", student_id: "A1111111", admin: true, password: 'foobar', password_confirmation: 'foobar')
+      User.create(name: "dummy taro", student_id: "A1111111", admin: true, password: 'foobar', password_confirmation: 'foobar')
       params = { session: { student_id: "A1111111", password: "foobar" } }
       post login_path, params
     }
 
     describe "when params is correct" do
       let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
-      before { post lessons_path, params }
-      it "should create new lesson and attache passed tags and students and go index page" do
-        lesson = Lesson.find_by_title("sansu")
-        expect(lesson.tags.count).to eq 2
-        expect(lesson.students.size).to eq 3
-        expect(response).to redirect_to lessons_path
+      it "should attach tag on new lesson and go lesson page" do
+          post lessons_path, params
+          lesson = Lesson.find_by_title("sansu")
+          expect(lesson.tags.count).to eq 2
+          expect(response).to redirect_to lessons_path
+      end
+
+      context "all students are not registered yet" do
+        specify "creates new students and make subscription" do
+          expect { post lessons_path, params }.to change { User.count }.from(1).to(4)
+          lesson = Lesson.find_by_title("sansu")
+          expect(lesson.students.size).to eq 3
+        end
+      end
+      context "one of students already registered to this app" do
+        let!(:already_registed_user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar') }
+        specify "creates only not registered student. But make subscription on all students" do
+          expect { post lessons_path, params }.to change { User.count }.from(2).to(4)
+          lesson = Lesson.find_by_title("sansu")
+          expect(lesson.students.size).to eq 3
+        end
       end
     end
-    context "when params is not enough" do
+
+    describe "when params is not enough" do
       let(:params) { { lesson: { day_of_week: 0, period: 1, title: "", tags: "tag1,tag2" } } }
       it "should redirect to lesson#new" do
         post lessons_path, params

@@ -13,7 +13,14 @@ class User < ActiveRecord::Base
     format: { with: /\A[ABab][0-9]{7}/ },
     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password,
+    presence: true,
+    length: { minimum: 6 },
+    on: :create
+  validates :password,
+    length: { minimum: 6 },
+    allow_blank: true,
+    on: :update
 
   def comment(question, content)
     comments.create(question_id: question.id, content: content)
