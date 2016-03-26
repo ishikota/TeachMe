@@ -9,10 +9,8 @@ feature "Lessons", :type => :feature do
 
   describe 'index page' do
     context "when lesson exists" do
-      before {
-        Lesson.create(title: "算数", day_of_week: 0, period: 1)
-        Lesson.create(title: "国語", day_of_week: 1, period: 2)
-      }
+      let!(:sansu) { Lesson.create(title: "算数", day_of_week: 0, period: 1) }
+      let!(:kokugo) { Lesson.create(title: "国語", day_of_week: 1, period: 2) }
       it "should display all lessons" do
         visit lessons_path
         expect(page).to have_content '算数'
@@ -21,6 +19,8 @@ feature "Lessons", :type => :feature do
         expect(page).to have_content '国語'
         expect(page).to have_content '火曜'
         expect(page).to have_content '2限'
+        expect(page).to have_link nil, href: lesson_questions_path(sansu)
+        expect(page).to have_link nil, href: lesson_questions_path(kokugo)
       end
     end
     context "when no lesson is found" do
