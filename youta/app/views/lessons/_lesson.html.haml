@@ -1,5 +1,7 @@
+-# local variable
+-# item_link : method object which returns item link with lesson object as argument
 %li
-  = link_to lesson_questions_path(lesson) do
+  = link_to item_link.call(lesson) do
     %div
       %span= Lesson.day_of_week_to_str lesson.day_of_week
       %span= Lesson.period_to_str lesson.period

@@ -48,6 +48,7 @@ feature "Users", :type => :feature do
       visit management_path
       expect(page).to have_content lecture.title
       expect(page).to have_link '授業を追加', href: new_lesson_path
+      expect(page).to have_link nil, href: edit_lesson_path(lecture)
     end
   end
 
