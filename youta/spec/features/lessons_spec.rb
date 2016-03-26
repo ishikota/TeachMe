@@ -76,6 +76,7 @@ feature "Lessons", :type => :feature do
       expect(page).to have_field '授業名', with: '算数'
       expect(page).to have_field '授業内容(タグ)', with: '足し算,引き算'
       expect(page).to have_field '受講者の追加'
+      expect(page).to have_link '受講者一覧', href: students_lesson_path(lesson)
     end
 
     describe "append new user to lesson" do
@@ -91,4 +92,21 @@ feature "Lessons", :type => :feature do
       end
     end
   end
+
+  describe "#students" do
+    let(:params) { { name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar' } }
+    let!(:user1) { User.create(params.merge( name: "kota", student_id: "A1178086")) }
+    let!(:user2) { User.create(params.merge( name: "ishi", student_id: "B1578048")) }
+    let(:lesson) { Lesson.create(title: "算数", day_of_week: 1, period: 2) }
+    before {
+      Subscription.create(user_id: user1.id, lesson_id: lesson.id)
+      Subscription.create(user_id: user2.id, lesson_id: lesson.id)
+      visit students_lesson_path(lesson)
+    }
+    it "should display students who subscribes the lesson" do
+      expect(page).to have_selector 'li', count: 2
+    end
+  end
+
+
 end

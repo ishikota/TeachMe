@@ -42,6 +42,10 @@ class LessonsController < ApplicationController
     redirect_to lessons_path
   end
 
+  def students
+    @lesson = Lesson.find(params[:id])
+  end
+
   private
 
     def make_subscription(students)
