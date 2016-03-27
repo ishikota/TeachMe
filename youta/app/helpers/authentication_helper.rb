@@ -5,7 +5,7 @@ module AuthenticationHelper
   def signed_in_user
     unless logged_in?
       store_location
-      redirect_to login_url unless logged_in?
+      redirect_to login_url, notice: "ログインをしてください"
     end
   end
 

@@ -8,6 +8,7 @@ module Helpers
 
   def require_login_and_friendly_forward(user, url)
     visit url
+    expect(page).to have_content 'ログインをしてください'
     log_in(user, visit=false)
     expect(current_url).to eq url
   end
