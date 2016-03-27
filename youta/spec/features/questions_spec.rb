@@ -65,6 +65,7 @@ feature "Questions", type: :feature do
 
     describe "#comment" do
       let(:content) { 'I tried clean build but ...' }
+      before { Subscription.create(user_id: user.id, lesson_id: lesson.id) }
       it "should post comment" do
         fill_in 'comment_content', with: content
         click_button 'コメント'
