@@ -12,12 +12,10 @@ feature "Lessons", :type => :feature do
   end
 
   let!(:user) { FactoryGirl.create(:taro) }
-  before "login" do
-    log_in(user)
-  end
-
+  let!(:admin) { FactoryGirl.create(:admin) }
 
   describe 'index page' do
+    before { log_in(user) }
     context "when lesson exists" do
       let!(:sansu) { FactoryGirl.create(:sansu) }
       let!(:kokugo) { FactoryGirl.create(:kokugo) }
@@ -43,7 +41,7 @@ feature "Lessons", :type => :feature do
   end
 
   describe "#new" do
-
+    before { log_in(admin) }
     describe 'creates new lesson' do
       before {
         visit new_lesson_path
@@ -57,13 +55,14 @@ feature "Lessons", :type => :feature do
       specify "new lesson is created" do
         expect(page).to have_selector 'li', count:1
         expect(Tag.count).to eq 2
-        expect(User.count).to eq 4
+        expect(User.count).to eq 5
         expect(EditorRelationship.count).to eq 1
       end
     end
   end
 
   describe "edit sansu lesson" do
+    before { log_in(admin) }
     let!(:lesson) { FactoryGirl.create(:sansu) }
     let!(:tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
     let!(:hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
@@ -101,6 +100,7 @@ feature "Lessons", :type => :feature do
   end
 
   describe "#students" do
+    before { log_in(admin) }
     let!(:user1) { FactoryGirl.create(:kota) }
     let!(:user2) { FactoryGirl.create(:ishimoto) }
     let(:lesson) { Lesson.create(FactoryGirl.attributes_for(:lesson)) }
@@ -115,13 +115,15 @@ feature "Lessons", :type => :feature do
   end
 
   describe "authentication" do
-    before {
-      visit root_path
-      click_link "ログアウト"
-    }
-
     it { require_login_and_friendly_forward user, lessons_url }
-    it { require_login_and_friendly_forward user, new_lesson_url }
+
+    describe "not admin user try to access" do
+      before { log_in(user) }
+      let!(:lecture) { user.lectures.create(FactoryGirl.attributes_for(:lesson)) }
+      it { require_admin_and_redirect new_lesson_url }
+      it { require_admin_and_redirect edit_lesson_url(lecture) }
+      it { require_admin_and_redirect students_lesson_path(lecture) }
+    end
   end
 
 

@@ -8,9 +8,10 @@ end
 feature "Users", :type => :feature do
 
   let!(:user) { FactoryGirl.create(:user) }
-  before { log_in(user) }
+  let!(:admin) { FactoryGirl.create(:admin) }
 
   describe "#show" do
+    before { log_in(user) }
     let!(:lesson) { user.lessons.create(FactoryGirl.attributes_for(:lesson)) }
     it 'should display user information' do
       visit user_path(user)
@@ -21,6 +22,7 @@ feature "Users", :type => :feature do
   end
 
   describe "#edit & #update" do
+    before { log_in(user) }
     let(:new_name) { 'Ishimoto Kota' }
     let(:password) { 'foobar' }
     it "should update user name" do
@@ -43,7 +45,8 @@ feature "Users", :type => :feature do
   end
 
   describe "#manage" do
-    let!(:lecture) { user.lectures.create(FactoryGirl.attributes_for(:lesson)) }
+    before { log_in(admin) }
+    let!(:lecture) { admin.lectures.create(FactoryGirl.attributes_for(:lesson)) }
     it "should display his lecture" do
       visit management_path
       expect(page).to have_content lecture.title
@@ -53,14 +56,13 @@ feature "Users", :type => :feature do
   end
 
   describe "authentication" do
-    before {
-      visit root_path
-      click_link "ログアウト"
-    }
-
     it { require_login_and_friendly_forward user, user_url(user)}
     it { require_login_and_friendly_forward user, edit_user_url(user)}
-    it { require_login_and_friendly_forward user, management_url(user)}
+
+    describe "access management page" do
+      before { log_in(user) }
+      it { require_admin_and_redirect management_url }
+    end
   end
 
 end

@@ -12,4 +12,11 @@ module Helpers
     log_in(user, visit=false)
     expect(current_url).to eq url
   end
+
+  def require_admin_and_redirect(url)
+    visit url
+    expect(page).to have_content '管理者権限が必要です'
+    expect(current_url).to eq root_url
+  end
+
 end

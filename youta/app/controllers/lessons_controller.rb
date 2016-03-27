@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   include LessonEditHelper
   before_action :signed_in_user
+  before_action :admin_user, except: :index
 
   def index
     @lessons = Lesson.all
