@@ -1,24 +1,23 @@
 require 'rails_helper'
+require 'controllers/helpers'
+
+RSpec.configure do |c|
+  c.include ControllerSpecHelpers
+end
 
 RSpec.describe SessionsController, :type => :request do
 
-  let!(:user) {
-    User.create(name: "Kota Ishimoto", student_id: "A1178086", password: "foobar", password_confirmation: "foobar")
-  }
-  let(:params) {
-    { session: { student_id: "A1178086", password: 'foobar' } }
-  }
+  let(:user) { FactoryGirl.create(:user) }
+  before { log_in(user) }
 
-  describe "POST login" do
+  describe "#login" do
     it "should save userid to session when success" do
-      post login_path, params
       expect(session[:user_id]).to eq user.id
     end
   end
 
-  describe "DELETE logout" do
-    it "should logout" do
-      post login_path, params
+  describe "#logout" do
+    it "should success" do
       delete logout_path
       expect(session[:user_id]).to be_nil
     end

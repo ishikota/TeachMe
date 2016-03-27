@@ -6,9 +6,7 @@ RSpec.configure do |c|
 end
 
 feature 'Sessions', type: :feature do
-  let!(:user) { 
-    User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_confirmation: 'foobar')
-  }
+  let!(:user) { FactoryGirl.create(:user) }
 
   describe "#login" do
     context "success" do

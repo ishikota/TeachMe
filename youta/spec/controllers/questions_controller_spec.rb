@@ -1,22 +1,27 @@
 require 'rails_helper'
+require 'controllers/helpers'
+
+RSpec.configure do |c|
+  c.include ControllerSpecHelpers
+end
 
 RSpec.describe QuestionsController, :type => :request do
-  let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar') }
-  let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
-  let!(:tag) { lesson.tags.create(name: "tashizan") }
+  let!(:user) { FactoryGirl.create(:user) }
+  let!(:lesson) { FactoryGirl.create(:lesson) }
+  let!(:tag) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
   let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
 
-  describe "GET index" do
+  describe "#index" do
     let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
 
-    it "assigns lesson to @lesson" do
+    it "shoul assigns lesson to @lesson" do
       get lesson_questions_path(lesson)
       expect(assigns(:lesson)).to eq lesson
     end
   end
 
-  describe "GET new" do
-    it "assigns new question which belongs to lesson" do
+  describe "#new" do
+    it "should assign new question which belongs to lesson" do
       get new_lesson_question_path(lesson)
       expect(assigns(:lesson)).to eq lesson
       expect(assigns(:question).lesson).to eq lesson
@@ -27,10 +32,7 @@ RSpec.describe QuestionsController, :type => :request do
     let(:params) {
       { question: { title: lesson.title, tags: tag.id }, comment: { content: "Help me" } }
     }
-    let(:login_params) {
-      { session: { student_id: "A1178086", password: 'foobar' } }
-    }
-    before { post login_path, login_params }
+    before { log_in(user) }
     it "should creates new question and render the questions page" do
       post lesson_questions_path(lesson), params
       question = Question.find_by_title(lesson.title)
@@ -41,17 +43,12 @@ RSpec.describe QuestionsController, :type => :request do
   end
 
   describe "#show" do
-    let(:params) { { session: { student_id: "A1178086", password: 'foobar' } } }
-    before {
-      post login_path, params
-    }
-
+    before { log_in(user) }
     it "should display question about Build error" do
       get lesson_question_path(lesson, question1)
       expect(assigns(:lesson)).to eq lesson
       expect(assigns(:question)).to eq question1
     end
   end
-
 
 end
