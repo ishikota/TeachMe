@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :signed_in_user
+
   def index
     @lesson = Lesson.find(params[:lesson_id])
   end

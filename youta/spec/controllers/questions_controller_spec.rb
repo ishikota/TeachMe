@@ -10,6 +10,7 @@ RSpec.describe QuestionsController, :type => :request do
   let!(:lesson) { FactoryGirl.create(:lesson) }
   let!(:tag) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
   let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
+  before { log_in(user) }
 
   describe "#index" do
     let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }

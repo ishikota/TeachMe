@@ -49,13 +49,6 @@ class LessonsController < ApplicationController
 
   private
 
-    def signed_in_user
-      unless logged_in?
-        store_location
-        redirect_to login_url unless logged_in?
-      end
-    end
-
     def make_subscription(students)
       students.each { |student|
         student.subscriptions.create(lesson_id: @lesson.id)

@@ -74,4 +74,14 @@ feature "Questions", type: :feature do
     end
   end
 
+  describe "authentication" do
+    before {
+      visit root_path
+      click_link "ログアウト"
+    }
+
+    it { require_login_and_friendly_forward user, lesson_questions_url(lesson) }
+    it { require_login_and_friendly_forward user, new_lesson_question_url(lesson)}
+  end
+
 end

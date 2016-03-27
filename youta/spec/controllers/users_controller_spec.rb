@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, :type => :request do
   let!(:user) { FactoryGirl.create(:user)}
+  before { log_in(user) }
 
   describe "#show" do
     it "should assign user" do

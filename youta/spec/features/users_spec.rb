@@ -52,4 +52,15 @@ feature "Users", :type => :feature do
     end
   end
 
+  describe "authentication" do
+    before {
+      visit root_path
+      click_link "ログアウト"
+    }
+
+    it { require_login_and_friendly_forward user, user_url(user)}
+    it { require_login_and_friendly_forward user, edit_user_url(user)}
+    it { require_login_and_friendly_forward user, management_url(user)}
+  end
+
 end
