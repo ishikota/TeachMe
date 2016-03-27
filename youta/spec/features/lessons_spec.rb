@@ -119,13 +119,9 @@ feature "Lessons", :type => :feature do
       visit root_path
       click_link "ログアウト"
     }
-    context "on index page" do
-      it "should require login and friendly forward" do
-        visit lessons_path
-        log_in(user, visit=false)
-        expect(current_url).to eq lessons_url
-      end
-    end
+
+    it { require_login_and_friendly_forward user, lessons_url }
+    it { require_login_and_friendly_forward user, new_lesson_url }
   end
 
 
