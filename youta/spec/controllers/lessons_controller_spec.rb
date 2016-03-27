@@ -1,11 +1,16 @@
 require 'rails_helper'
+require 'controllers/helpers'
+
+RSpec.configure do |c|
+  c.include ControllerSpecHelpers
+end
 
 describe LessonsController, type: :request do
 
   describe "GET 'index'" do
     before {
-      Lesson.create(title: "sansu", day_of_week: 0, period: 1)
-      Lesson.create(title: "kokugo", day_of_week: 1, period: 2)
+      FactoryGirl.create(:sansu)
+      FactoryGirl.create(:kokugo)
     }
     it "should assigns all lessons to @lessons" do
       get lessons_path
@@ -25,8 +30,8 @@ describe LessonsController, type: :request do
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
     let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
     before {
-      User.create(name: "dummy taro", student_id: "A1111111", admin: true, password: 'foobar', password_confirmation: 'foobar')
-      post login_path, { session: { student_id: "A1111111", password: "foobar" } }
+      taro = FactoryGirl.create(:taro)
+      log_in(taro)
     }
 
     describe "when params is correct" do
@@ -45,7 +50,7 @@ describe LessonsController, type: :request do
         end
       end
       context "one of students already registered to this app" do
-        let!(:already_registed_user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar') }
+        let!(:already_registed_user) { FactoryGirl.create(:user) }
         specify "creates only not registered student. But make subscription on all students" do
           expect { post lessons_path, params }.to change { User.count }.from(2).to(4)
           lesson = Lesson.find_by_title("sansu")
@@ -73,7 +78,7 @@ describe LessonsController, type: :request do
   end
 
   describe "#edit" do
-    let(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    let(:lesson) { FactoryGirl.create(:lesson) }
     it "should assign sansu to @lesson" do
       get edit_lesson_path(lesson)
       expect(assigns(:lesson)).to eq lesson
@@ -81,13 +86,14 @@ describe LessonsController, type: :request do
   end
 
   describe "#update" do
-    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
-    let!(:tashizan) { lesson.tags.create(name:"tashizan") }
-    let!(:hikizan) { lesson.tags.create(name:"hikizan") }
+    let!(:lesson) { FactoryGirl.create(:sansu) }
+    let!(:tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
+    let!(:hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
+    let!(:kakezan) { lesson.tags.create(FactoryGirl.attributes_for(:kakezan)) }
 
-    describe "when update param is valid" do
-      let(:params) { { lesson: { title: "sugaku", tags: "tashizan, kakezan" } } }
-      it "should update sansu to sugaku" do
+    describe "lesson title" do
+      let(:params) { { lesson: { title: "sugaku", tags: [tashizan.name, kakezan.name].join(',') } } }
+      it "should update title from sansu to sugaku" do
         put lesson_path(lesson), params
         lesson.reload
         expect(lesson.title).to eq 'sugaku'
@@ -97,7 +103,7 @@ describe LessonsController, type: :request do
         expect(response).to render_template(:edit)
       end
     end
-    describe "when update params is invalid" do
+    describe "with invalid params" do
       let(:params) { { lesson: { day_of_week: -1, title: "" } } }
       it "should render edit page again" do
         put lesson_path(lesson), params
@@ -107,8 +113,8 @@ describe LessonsController, type: :request do
   end
 
   describe "#destroy" do
-    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
-    it "should delete sansu lesson" do
+    let!(:lesson) { FactoryGirl.create(:lesson) }
+    it "should success" do
       delete lesson_path(lesson)
       expect(Lesson.exists?(lesson.id)).to be_falsey
       expect(response).to redirect_to lessons_path

@@ -1,22 +1,17 @@
 require 'rails_helper'
+require 'features/helpers'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature "Users", :type => :feature do
 
-  let!(:user) {
-    user = User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
-  }
-  before {
-    visit login_path
-    fill_in '学生番号', with: user.student_id
-    fill_in 'パスワード', with: user.password
-    click_button 'ログイン'
-  }
+  let!(:user) { FactoryGirl.create(:user) }
+  before { log_in(user) }
 
   describe "#show" do
-    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 1, period:1) }
-    before {
-      user.subscriptions.create(lesson_id: lesson.id)
-    }
+    let!(:lesson) { user.lessons.create(FactoryGirl.attributes_for(:lesson)) }
     it 'should display user information' do
       visit user_path(user)
       expect(page).to have_content user.name
@@ -48,7 +43,7 @@ feature "Users", :type => :feature do
   end
 
   describe "#manage" do
-    let!(:lecture) { user.lectures.create(title: 'sansu', day_of_week: 0, period: 1) }
+    let!(:lecture) { user.lectures.create(FactoryGirl.attributes_for(:lesson)) }
     it "should display his lecture" do
       visit management_path
       expect(page).to have_content lecture.title

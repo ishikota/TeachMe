@@ -1,48 +1,46 @@
 require 'rails_helper'
+require 'features/helpers'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature "Questions", type: :feature do
 
-  let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
-  let!(:tag_tashizan) { lesson.tags.create(name: "tashizan") }
-  let!(:tag_hikizan) { lesson.tags.create(name: "hikizan") }
-  let!(:user) {
-    user = User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
-  }
+  let!(:user) { FactoryGirl.create(:user) }
+  let!(:lesson) { FactoryGirl.create(:lesson) }
+  let!(:tag_tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
+  let!(:tag_hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
 
-  before {
-    visit login_path
-    fill_in '学生番号', with: user.student_id
-    fill_in 'パスワード', with: user.password
-    click_button 'ログイン'
-  }
+  before { log_in(user) }
 
   it 'visits page when no questions' do
     visit lesson_questions_path(lesson)
-    expect(page).to have_content 'sansu の質問'
+    expect(page).to have_content 'hoge の質問'
     expect(page).to have_content 'まだ質問が投稿されていません．'
     expect(page).to have_link '質問する'
   end
 
   describe "index page" do
     let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    before {
-      question.tag_relationships.create(tag_id: tag_tashizan.id)
-    }
+    before { question.tag_relationships.create(tag_id: tag_tashizan.id) }
     it "should have question about 'Build error'" do
       visit lesson_questions_path(lesson)
       expect(page).to have_content 'Build error'
-      expect(page).to have_content 'tashizan'
+      expect(page).to have_content '足し算'
       expect(page).to have_content 'Kota Ishimoto さんが質問しました'
       expect(page).to have_link nil, href: lesson_question_path(lesson, question)
     end
   end
 
   describe "new page" do
-    it "should create new question" do
+    before {
       visit new_lesson_question_path(lesson)
       expect(page).to have_content "#{lesson.title} の質問の作成"
+    }
+    it "should create new question" do
       fill_in 'タイトル', with: '5-2が分かりません'
-      select 'hikizan', from: '授業項目'
+      select '引き算', from: '授業項目'
       fill_in '詳細', with: '引き算ってなんですか?'
       click_button '質問する'
 

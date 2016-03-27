@@ -1,43 +1,36 @@
 require 'rails_helper'
+require 'features/helpers'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature 'Sessions', type: :feature do
+  let!(:user) { FactoryGirl.create(:user) }
 
   describe "#login" do
-    before {
-      User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_confirmation: 'foobar')
-    }
-
-    it "should success login" do
-      visit login_path
-      fill_in '学生番号', with: 'A1178086'
-      fill_in 'パスワード', with: 'foobar'
-      click_button 'ログイン'
-      expect(page).to have_content '授業一覧'
-      expect(page).to have_link 'ログアウト', href: logout_path
+    context "success" do
+      before { log_in(user) }
+      it "should have logout link" do
+        expect(page).to have_content '授業一覧'
+        expect(page).to have_link 'ログアウト', href: logout_path
+      end
     end
-
-    it "should failed to login" do
-      visit '/login'
-      fill_in '学生番号', with: 'A1178086'
-      fill_in 'パスワード', with: 'barfoo'
-      click_button 'ログイン'
-      expect(page).to have_content 'ログインが必要です.'
-      expect(page).to have_link 'ログイン', href: login_path
+    context "failure" do
+      before {
+        user.password = "barfoo"
+        log_in(user)
+      }
+      it "should still have login path" do
+        expect(page).to have_content 'ログインが必要です.'
+        expect(page).to have_link 'ログイン', href: login_path
+      end
     end
   end
 
   describe "#logout" do
-    before {
-      User.create(name: "Kota Ishimoto", student_id: "A1178086", password: 'foobar', password_confirmation: 'foobar')
-      visit login_path
-      fill_in '学生番号', with: 'A1178086'
-      fill_in 'パスワード', with: 'foobar'
-      click_button 'ログイン'
-      expect(page).to have_content '授業一覧'
-      expect(page).to have_link 'ログアウト', href: logout_path
-    }
-
-    it "should logout" do
+    before { log_in(user) }
+    it "should success" do
       click_link 'ログアウト'
       expect(page).to have_content 'ログインが必要です.'
       expect(page).to have_link 'ログイン', href: login_path

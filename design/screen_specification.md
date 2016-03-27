@@ -8,3 +8,12 @@
 - 質問作成(QuestionController#create)
 - コメント一覧(CommentController#index)
 - マイページ(UserController#index)
+
+# アクセス権限
+- admin(先生)
+  - 管理画面
+  - 授業作成,編集画面
+- ログイン済み
+  - 残り全画面
+- 非ログイン
+  - ログイン画面
