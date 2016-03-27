@@ -1,5 +1,6 @@
 class LessonsController < ApplicationController
   include LessonEditHelper
+  before_action :signed_in_user
 
   def index
     @lessons = Lesson.all
@@ -47,6 +48,10 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def signed_in_user
+      redirect_to login_url unless logged_in?
+    end
 
     def make_subscription(students)
       students.each { |student|

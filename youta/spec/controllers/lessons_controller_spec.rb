@@ -6,6 +6,10 @@ RSpec.configure do |c|
 end
 
 describe LessonsController, type: :request do
+  before {
+    user = FactoryGirl.create(:taro)
+    log_in(user)
+  }
 
   describe "GET 'index'" do
     before {
@@ -29,10 +33,6 @@ describe LessonsController, type: :request do
     let(:file_name) { "spec/fixtures/lecture_students.csv" }
     let(:file_path) { fixture_file_upload(file_name, 'text/csv') }
     let(:params) { { lesson: { day_of_week: 0, period: 1, title: "sansu", tags: "tag1,tag2", students_csv: file_path } } }
-    before {
-      taro = FactoryGirl.create(:taro)
-      log_in(taro)
-    }
 
     describe "when params is correct" do
       it "should attach tag on new lesson and go lesson page" do

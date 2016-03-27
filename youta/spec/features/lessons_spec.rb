@@ -11,10 +11,11 @@ feature "Lessons", :type => :feature do
     attach_file '受講者', "#{Rails.root}/spec/fixtures/lecture_students.csv"
   end
 
-  it 'visit page wit no-lesson item' do
-    visit lessons_path
-    expect(page).to have_content '授業一覧'
+  let!(:user) { FactoryGirl.create(:taro) }
+  before "login" do
+    log_in(user)
   end
+
 
   describe 'index page' do
     context "when lesson exists" do
@@ -42,14 +43,10 @@ feature "Lessons", :type => :feature do
   end
 
   describe "#new" do
-    let!(:user) { FactoryGirl.create(:user) }
-    before {
-      log_in(user)
-      visit new_lesson_path
-    }
 
     describe 'creates new lesson' do
       before {
+        visit new_lesson_path
         select '火曜', from: "曜日"
         select '3限', from: "時間"
         fill_in '授業名', with: '情報理工学演習'
@@ -60,7 +57,7 @@ feature "Lessons", :type => :feature do
       specify "new lesson is created" do
         expect(page).to have_selector 'li', count:1
         expect(Tag.count).to eq 2
-        expect(User.count).to eq 3
+        expect(User.count).to eq 4
         expect(EditorRelationship.count).to eq 1
       end
     end
@@ -114,6 +111,20 @@ feature "Lessons", :type => :feature do
     }
     it "should display students who subscribes the lesson" do
       expect(page).to have_selector 'li', count: 2
+    end
+  end
+
+  describe "authentication" do
+    before {
+      visit root_path
+      click_link "ログアウト"
+    }
+    context "on index page" do
+      it "should require login and friendly forward" do
+        visit lessons_path
+        log_in(user, visit=false)
+        expect(current_url).to eq lessons_url
+      end
     end
   end
 
