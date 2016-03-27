@@ -1,4 +1,9 @@
 require 'rails_helper'
+require 'features/helpers'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature "Questions", type: :feature do
 
@@ -9,12 +14,7 @@ feature "Questions", type: :feature do
     user = User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
   }
 
-  before {
-    visit login_path
-    fill_in '学生番号', with: user.student_id
-    fill_in 'パスワード', with: user.password
-    click_button 'ログイン'
-  }
+  before { log_in(user) }
 
   it 'visits page when no questions' do
     visit lesson_questions_path(lesson)

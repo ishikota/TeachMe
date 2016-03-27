@@ -1,4 +1,9 @@
 require 'rails_helper'
+require 'features/helpers'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature "Lessons", :type => :feature do
 
@@ -37,10 +42,7 @@ feature "Lessons", :type => :feature do
       User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_confirmation: 'foobar')
     }
     before {
-      visit login_path
-      fill_in '学生番号', with: user.student_id
-      fill_in 'パスワード', with: user.password
-      click_button 'ログイン'
+      log_in(user)
       visit new_lesson_path
     }
 
