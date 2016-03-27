@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :signed_in_user
+  before_action :admin_user, only: :manage
 
   def show
     @user = User.find(params[:id])

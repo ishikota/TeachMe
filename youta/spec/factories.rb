@@ -19,6 +19,12 @@ FactoryGirl.define do
       name "taro"
       student_id "A1111111"
     end
+
+    factory :admin do
+      name "admin taro"
+      student_id "A0000000"
+      admin true
+    end
   end
   
   factory :lesson do
