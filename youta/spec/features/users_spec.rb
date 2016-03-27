@@ -56,12 +56,25 @@ feature "Users", :type => :feature do
   end
 
   describe "authentication" do
+    let!(:other) { FactoryGirl.create(:taro) }
+    def require_correct_user_and_redirect(url)
+      visit url
+      expect(page).to have_content '不正なアクセスです'
+      expect(current_url).not_to eq url
+    end
+
     it { require_login_and_friendly_forward user, user_url(user)}
     it { require_login_and_friendly_forward user, edit_user_url(user)}
 
     describe "access management page" do
       before { log_in(user) }
       it { require_admin_and_redirect management_url }
+    end
+
+    describe 'should prevent from accessing other user content' do
+      before { log_in(user) }
+      it { require_correct_user_and_redirect(user_url(other)) }
+      it { require_correct_user_and_redirect(edit_user_url(other)) }
     end
   end
 

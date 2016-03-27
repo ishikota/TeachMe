@@ -19,10 +19,17 @@ RSpec.describe UsersController, :type => :request do
   end
 
   describe "#update" do
+    let(:params) { { user: FactoryGirl.attributes_for(:kota) } }
     it "should update user and redirect to my page" do
-      params = { user: { student_id: "a1178086", name: "Kota", password: 'foobar', password_confirmation: 'foobar' } }
       put user_path(user), params
       expect(response).to redirect_to user_path(user)
+    end
+    it "should not update other user's information" do
+      other = FactoryGirl.create(:taro)
+      expected = other.student_id
+      put user_path(other), params
+      other.reload
+      expect(other.student_id).to eq expected
     end
   end
 
