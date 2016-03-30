@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, :type => :request do
   let!(:user) { FactoryGirl.create(:user)}
+  before { log_in(user) }
 
   describe "#show" do
     it "should assign user" do
@@ -18,18 +19,26 @@ RSpec.describe UsersController, :type => :request do
   end
 
   describe "#update" do
+    let(:params) { { user: FactoryGirl.attributes_for(:kota) } }
     it "should update user and redirect to my page" do
-      params = { user: { student_id: "a1178086", name: "Kota", password: 'foobar', password_confirmation: 'foobar' } }
       put user_path(user), params
       expect(response).to redirect_to user_path(user)
+    end
+    it "should not update other user's information" do
+      other = FactoryGirl.create(:taro)
+      expected = other.student_id
+      put user_path(other), params
+      other.reload
+      expect(other.student_id).to eq expected
     end
   end
 
   describe "#management" do
-    before { log_in(user) }
+    let!(:admin) { FactoryGirl.create(:admin) }
+    before { log_in(admin) }
     it "should assign user's lectures" do
       get management_path
-      expect(assigns(:user)).to eq user
+      expect(assigns(:user)).to eq admin
     end
   end
 

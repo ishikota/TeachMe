@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     user = User.find_by(student_id: params[:session][:student_id].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in user
-      redirect_to lessons_path
+      redirect_back_or lessons_path
     else
       render 'new'
     end

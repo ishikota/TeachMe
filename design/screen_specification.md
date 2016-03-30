@@ -1,19 +1,23 @@
 # 必要な画面
 - ログイン(SessionController#create)
-- 管理画面(AdminController#index)
+- 管理画面(UsersController#manage)
 - 授業一覧(LessonController#index)
-- 授業作成(LessonController#create)
+- 授業作成(LessonController#new)
 - 授業編集画面(LessonController#edit)
 - 質問一覧(QuestionController#index)
-- 質問作成(QuestionController#create)
+- 質問作成(QuestionController#new)
 - コメント一覧(CommentController#index)
-- マイページ(UserController#index)
+- マイページ(UserController#show)
+- タグ編集画面
+- 受講者一覧&編集画面
 
 # アクセス権限
 - admin(先生)
   - 管理画面
   - 授業作成,編集画面
 - ログイン済み
+  - 受講している授業に対してだけ,質問、コメントできる.
+  - 自分のマイページのみ見れる
   - 残り全画面
 - 非ログイン
   - ログイン画面
