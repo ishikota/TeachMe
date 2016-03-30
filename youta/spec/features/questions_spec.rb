@@ -64,13 +64,23 @@ feature "Questions", type: :feature do
     end
 
     describe "#comment" do
-      let(:content) { 'I tried clean build but ...' }
-      before { Subscription.create(user_id: user.id, lesson_id: lesson.id) }
-      it "should post comment" do
-        fill_in 'comment_content', with: content
-        click_button 'コメント'
-        expect(page).to have_selector 'li', count:2
-        expect(page).to have_content content
+      context "subscribing user" do
+        let(:content) { 'I tried clean build but ...' }
+        before {
+          Subscription.create(user_id: user.id, lesson_id: lesson.id);
+          visit current_path  # reload screen
+        }
+        it "should post comment" do
+          fill_in 'comment_content', with: content
+          click_button 'コメント'
+          expect(page).to have_selector 'li', count:2
+          expect(page).to have_content content
+        end
+      end
+      context "not subscribing user" do
+        it "should not see comment form" do
+          expect(page).not_to have_selector 'form.new_comment'
+        end
       end
     end
   end
