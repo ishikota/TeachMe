@@ -1,8 +1,10 @@
-%div
-  %span= link_to 'Youta', root_path
-  - if logged_in?
-    = link_to "マイページ", user_path(current_user)
-    = link_to "ログアウト", logout_path, method: :delete
-    = link_to '管理画面', management_path
-  - else
-    = link_to "ログイン", login_path, method: :get
+%header.navbar.navbar-fixed-top.navbar-inverse
+  %div.container
+    = link_to 'Youta', root_path, id: 'logo'
+    %ul.nav.navbar-nav.navbar-right
+      - if logged_in?
+        %li= link_to "マイページ", user_path(current_user)
+        %li= link_to "ログアウト", logout_path, method: :delete
+        %li= link_to '管理画面', management_path
+      - else
+        %li= link_to "ログイン", login_path, method: :get
