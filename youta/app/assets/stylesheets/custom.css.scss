@@ -59,3 +59,43 @@ input, textarea, select, .uneditable-input {
 input {
   height: auto !important;
 }
+
+/* chat bubble */
+.chat-box {
+    width: 100%;
+    height: auto;
+    overflow: hidden; /*floatの解除*/
+    margin-bottom: 20px;
+}
+.chat-area {
+    width: 100%;
+    float: right;
+}
+.chat-bubble {
+    display: inline-block; /*コメントの文字数に合わせて可変*/
+    padding: 15px 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    position: relative;
+    background-color: #D9F0FF;
+  }
+.chat-bubble:after {
+    content: "";
+    position: absolute;
+    top: 50%; left: -10px;
+    margin-top: -10px;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #D9F0FF transparent transparent;
+}
+.chat-bubble.me {
+    background-color: #BCF5A9;
+}
+
+.chat-bubble.me:after {
+  border-color: transparent #BCF5A9 transparent transparent;
+}

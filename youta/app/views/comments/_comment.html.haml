@@ -1,3 +1,5 @@
-%li
+- bubble_class = ["chat-bubble"]
+- bubble_class << "me" if current_user == comment.user
+.chat-area
   %span= comment.user.name
-  %span= comment.content
+  %div{ class: bubble_class }= comment.content

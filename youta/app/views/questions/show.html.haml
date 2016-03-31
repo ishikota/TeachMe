@@ -1,11 +1,12 @@
 = link_to "#{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
 = @question.title
 = @question.user.name
-= render @question.comments
-- if current_user.lessons.include?(@lesson)
-  = form_for(Comment.new) do |f|
-    = f.hidden_field :question_id, value: @question.id
-    = f.hidden_field :user_id, value: current_user.id
-    = f.text_area :content
-    %br
-    = f.submit 'コメント'
+.chat-box
+  = render @question.comments
+  - if current_user.lessons.include?(@lesson)
+    = form_for(Comment.new) do |f|
+      = f.hidden_field :question_id, value: @question.id
+      = f.hidden_field :user_id, value: current_user.id
+      = f.text_area :content
+      %br
+      = f.submit 'コメント'
