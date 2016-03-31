@@ -1,3 +1,4 @@
 %h1= "#{@lesson.title} の質問"
-= link_to '質問する', controller: :questions, action: :new
-= render(@lesson.questions) || "まだ質問が投稿されていません．"
+= link_to '質問する', { controller: :questions, action: :new}, class: "btn btn-success"
+%ul{ id: "question-list", class: "list-group" }
+  = render(@lesson.questions) || "まだ質問が投稿されていません．"

@@ -1,3 +1,16 @@
 // Place all the styles related to the questions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#question-list {
+  margin-top: 16px;
+}
+
+.question-title {
+  float: left;
+  margin-right: 16px;
+}
+
+.question-sub-info {
+  clear: left;
+}

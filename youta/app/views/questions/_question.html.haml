@@ -1,6 +1,6 @@
-%div
-  = link_to lesson_question_path(question.lesson, question) do
-    = question.title
-    - question.tags.each do |tag|
-      %span= tag.name
-    %span= "#{question.user.name} さんが質問しました"
+%li{ id: "question-#{question.id}", class: ["question-row", "list-group-item"] }
+  %h4.question-title= link_to question.title, lesson_question_path(question.lesson, question)
+  - question.tags.each do |tag|
+    %span.btn.btn-primary.btn-sm.question-tag= tag.name
+  .question-sub-info
+    %small.text-muted= "#{question.user.name} さんが質問しました"
