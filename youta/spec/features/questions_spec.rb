@@ -60,7 +60,7 @@ feature "Questions", type: :feature do
     end
 
     it "should display comment on question" do
-      expect(page).to have_selector 'li', count:1
+      expect(page).to have_selector 'div.chat-bubble', count:1
     end
 
     describe "#comment" do
@@ -73,7 +73,7 @@ feature "Questions", type: :feature do
         it "should post comment" do
           fill_in 'comment_content', with: content
           click_button 'コメント'
-          expect(page).to have_selector 'li', count:2
+          expect(page).to have_selector 'div.chat-bubble', count:2
           expect(page).to have_content content
         end
       end
