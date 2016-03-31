@@ -12,9 +12,10 @@
   .chat-box
     = render @question.comments
     - if current_user.lessons.include?(@lesson)
-      = form_for(Comment.new) do |f|
-        = f.hidden_field :question_id, value: @question.id
-        = f.hidden_field :user_id, value: current_user.id
-        = f.text_area :content
-        %br
-        = f.submit 'コメント'
+      %hr
+      .col-xs-10.col-xs-offset-1
+        = form_for(Comment.new) do |f|
+          = f.hidden_field :question_id, value: @question.id
+          = f.hidden_field :user_id, value: current_user.id
+          = f.text_area :content, placeholder: "気軽にコメントしてみましょう．"
+          = f.submit 'コメント', class: 'btn btn-success'
