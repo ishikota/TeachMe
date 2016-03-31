@@ -1,12 +1,20 @@
-= link_to "#{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
-= @question.title
-= @question.user.name
-.chat-box
-  = render @question.comments
-  - if current_user.lessons.include?(@lesson)
-    = form_for(Comment.new) do |f|
-      = f.hidden_field :question_id, value: @question.id
-      = f.hidden_field :user_id, value: current_user.id
-      = f.text_area :content
-      %br
-      = f.submit 'コメント'
+.back-link
+  = link_to "＜ #{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
+.container
+  .question-main-info
+    %span.h4.question-title= @question.title
+    .pull-right
+      - @question.tags.each do |tag|
+        %span.btn.btn-primary.btn-sm.question-tag= tag.name
+  .question-subinfo
+    %small.text-muted="#{@question.user.name} さんが質問しました"
+  %hr
+  .chat-box
+    = render @question.comments
+    - if current_user.lessons.include?(@lesson)
+      = form_for(Comment.new) do |f|
+        = f.hidden_field :question_id, value: @question.id
+        = f.hidden_field :user_id, value: current_user.id
+        = f.text_area :content
+        %br
+        = f.submit 'コメント'
