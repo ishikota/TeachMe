@@ -77,7 +77,7 @@ feature "Lessons", :type => :feature do
       expect(page).to have_select '時間', selected: period
       expect(page).to have_field '授業名', with: lesson.title
       expect(page).to have_field '授業内容(タグ)', with: tag
-      expect(page).to have_field '受講者の追加'
+      expect(page).to have_field '受講者'
       expect(page).to have_link '受講者一覧', href: students_lesson_path(lesson)
     end
 

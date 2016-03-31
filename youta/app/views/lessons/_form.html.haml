@@ -1,0 +1,29 @@
+-# locals
+-# lesson : to dosplay
+-# submit-msg : text on submit button
+%div
+  = form_for(lesson) do |f|
+    %fieldset.form-group.col-xs-4
+      = f.label :day_of_week, "曜日"
+      = f.select :day_of_week, [['月曜',0],['火曜',1],['水曜',2],['木曜',3],['金曜',4]]
+
+    %fieldset.form-group.col-xs-4
+      = f.label :period, "時間"
+      = f.select :period, [['1限',1],['2限',2],['3限',3],['4限',4],['5限',5],['6限',6]]
+
+    .col-xs-4
+
+    %fieldset.form-group.col-xs-12
+      = f.label :title, "授業名"
+      = f.text_field :title
+
+    %fieldset.form-group.col-xs-12
+      = f.label :students_csv, "受講者"
+      = f.file_field :students_csv
+
+    %fieldset.form-group.col-xs-12
+      = f.label :tags, "授業内容(タグ)"
+      = f.text_field :tags, value: lesson.tags_to_str
+
+    %fieldset.form-group.col-xs-4.col-xs-offset-4.center
+      = f.submit submit_msg, class: "btn btn-success"
