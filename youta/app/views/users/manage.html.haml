@@ -1,3 +1,8 @@
 %h1 管理画面
-= link_to '授業を追加', new_lesson_path
-= render(partial: @user.lectures, locals: { item_link: method(:edit_lesson_path) })
+= link_to '授業を追加', new_lesson_path, class: "btn btn-success"
+
+%ul.nav.nav-tabs.lesson-list
+  %li.active
+    %a あなたが作成した授業
+%ul{ class: "list-group" }
+  = render(partial: @user.lectures, locals: { item_link: method(:edit_lesson_path) })

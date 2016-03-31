@@ -3,10 +3,16 @@
 %div
   = form_for(@user) do |f|
     = f.hidden_field :student_id, value: @user.student_id
-    = f.label :name, '名前'
-    = f.text_field :name
-    = f.label :password, 'パスワード'
-    = f.password_field :password
-    = f.label :password_confirmation, 'パスワードの確認'
-    = f.password_field :password_confirmation
-    = f.submit '更新'
+
+    %fieldset.form-group
+      = f.label :name, '名前'
+      = f.text_field :name
+    %fieldset.form-group
+      = f.label :password, 'パスワード'
+      = f.password_field :password
+      %small.text-muted 変更しない場合は空欄のまま更新してください.
+    %fieldset.form-group
+      = f.label :password_confirmation, 'パスワードの確認'
+      = f.password_field :password_confirmation
+    %fieldset.form-group.col-xs-4.col-xs-offset-4.center
+      = f.submit '更新', class: "btn btn-success"

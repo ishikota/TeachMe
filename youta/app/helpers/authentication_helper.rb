@@ -5,13 +5,15 @@ module AuthenticationHelper
   def signed_in_user
     unless logged_in?
       store_location
-      redirect_to login_url, notice: "ログインをしてください"
+      flash[:danger] = "ログインをしてください"
+      redirect_to login_url
     end
   end
 
   def admin_user
     unless logged_in? && current_user.admin?
-      redirect_to root_path, notice: "管理者権限が必要です"
+      flash[:danger] = "管理者権限が必要です"
+      redirect_to root_path
     end
   end
 

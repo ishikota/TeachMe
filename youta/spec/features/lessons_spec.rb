@@ -53,7 +53,7 @@ feature "Lessons", :type => :feature do
         click_button '作成する'
       }
       specify "new lesson is created" do
-        expect(page).to have_selector 'li', count:1
+        expect(page).to have_selector 'li.lesson-row', count:1
         expect(Tag.count).to eq 2
         expect(User.count).to eq 5
         expect(EditorRelationship.count).to eq 1
@@ -77,7 +77,7 @@ feature "Lessons", :type => :feature do
       expect(page).to have_select '時間', selected: period
       expect(page).to have_field '授業名', with: lesson.title
       expect(page).to have_field '授業内容(タグ)', with: tag
-      expect(page).to have_field '受講者の追加'
+      expect(page).to have_field '受講者'
       expect(page).to have_link '受講者一覧', href: students_lesson_path(lesson)
     end
 
@@ -110,7 +110,7 @@ feature "Lessons", :type => :feature do
       visit students_lesson_path(lesson)
     }
     it "should display students who subscribes the lesson" do
-      expect(page).to have_selector 'li', count: 2
+      expect(page).to have_selector 'li.user-row', count: 2
     end
   end
 

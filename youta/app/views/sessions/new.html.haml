@@ -1,11 +1,13 @@
-%h1 ログインが必要です.
-= form_for(:session, url: login_path) do |f|
-  = f.label 'student_id', '学生番号'
-  = f.text_field 'student_id'
-  %br
+%h1.center ログインが必要です.
+%div.row
+  %div.col-md-6.col-md-offset-3
+    = form_for(:session, url: login_path) do |f|
+      = f.label 'student_id', '学生番号'
+      = f.text_field 'student_id'
+      %br
 
-  = f.label 'password', 'パスワード'
-  = f.password_field 'password'
-  %br
+      = f.label 'password', 'パスワード'
+      = f.password_field 'password'
+      %br
 
-  = f.submit 'ログイン'
+      = f.submit 'ログイン'

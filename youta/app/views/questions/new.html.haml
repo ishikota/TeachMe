@@ -1,17 +1,21 @@
-%h1= "#{@lesson.title} の質問の作成"
+%h1.center= "#{@lesson.title} の質問の作成"
 
-%div
+%div.col-md-6.col-md-offset-3
   = form_for([@lesson, @question]) do |f|
-    = f.label :title, "タイトル"
-    = f.text_field :title
-    %br
+    %fieldset.form-group
+      = f.label :title, "タイトル"
+      = f.text_field :title
+      %small.text-muted 例: 情報理工学演習Ⅱ
 
-    = f.label :tags, "授業項目"
-    = f.select :tags, @lesson.tags.reduce([]) { |memo, tag| memo<<[tag.name, tag.id] }
-    %br
+    %fieldset.form-group
+      = f.label :tags, "授業項目"
+      = f.select :tags, @lesson.tags.reduce([]) { |memo, tag| memo<<[tag.name, tag.id] }
+      %small.text-muted 授業項目から質問を検索できるようになります
 
-    = label :comment, :content, "詳細"
-    = text_field :comment, :content
-    %br
-
-    = f.submit "質問する"
+    %fieldset.form-group
+      = label :comment, :content, "詳細"
+      = text_area :comment, :content
+      .text-muted
+        例) スライドXXページの,XXをしようとしたら,XXというエラーが出てしまいました.
+    .form-group.col-xs-4.col-xs-offset-4.center
+      = f.submit "質問する", class: "btn btn-success"

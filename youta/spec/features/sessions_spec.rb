@@ -23,7 +23,6 @@ feature 'Sessions', type: :feature do
       }
       it "should still have login path" do
         expect(page).to have_content 'ログインが必要です.'
-        expect(page).to have_link 'ログイン', href: login_path
       end
     end
   end
@@ -33,7 +32,6 @@ feature 'Sessions', type: :feature do
     it "should success" do
       click_link 'ログアウト'
       expect(page).to have_content 'ログインが必要です.'
-      expect(page).to have_link 'ログイン', href: login_path
     end
   end
 
