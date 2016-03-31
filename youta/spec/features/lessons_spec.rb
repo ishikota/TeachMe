@@ -53,7 +53,7 @@ feature "Lessons", :type => :feature do
         click_button '作成する'
       }
       specify "new lesson is created" do
-        expect(page).to have_selector 'li', count:1
+        expect(page).to have_selector 'li.lesson-row', count:1
         expect(Tag.count).to eq 2
         expect(User.count).to eq 5
         expect(EditorRelationship.count).to eq 1
