@@ -110,7 +110,7 @@ feature "Lessons", :type => :feature do
       visit students_lesson_path(lesson)
     }
     it "should display students who subscribes the lesson" do
-      expect(page).to have_selector 'li', count: 2
+      expect(page).to have_selector 'li.user-row', count: 2
     end
   end
 
