@@ -1,9 +1,9 @@
 -# local variable
 -# item_link : method object which returns item link with lesson object as argument
-%li
-  = link_to item_link.call(lesson) do
-    %div
+%li{ id: "lesson-#{lesson.id}", class: ["lesson-row", "list-group-item"] }
+  %div
+    .lesson-schedule
       %span= Lesson.day_of_week_to_str lesson.day_of_week
       %span= Lesson.period_to_str lesson.period
-      %span= lesson.title
+    = link_to lesson.title, item_link.call(lesson)
 
