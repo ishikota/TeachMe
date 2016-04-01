@@ -1,0 +1,2 @@
+%h1= "#{@lesson.title} の受講者一覧 (#{@students.size}人)"
+= render( partial: 'student', collection: @students ) || "受講者は登録されていません"
