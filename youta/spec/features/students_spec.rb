@@ -28,12 +28,22 @@ feature "Students", :type => :feature do
     end
   end
 
-  describe "add new user through csv file" do
-    it "should append new users on the students list" do
-      attach_students_file
-      click_button '追加'
-      expect(page).to have_selector 'li.user-row', count: 4
+  describe "click append button" do
+    context "with attaching students id csv file" do
+      it "should append new users on the students list" do
+        attach_students_file
+        expect { click_button '追加' }.to change { lesson.students.size }.by(3)
+        expect(page).to have_selector 'li.user-row', count: 4
+      end
     end
+
+    context "without students id csv file" do
+      it "should fail to append student and display message" do
+        expect { click_button '追加' }.not_to change { lesson.students.size }
+        expect(page).to have_selector '.alert-warning'
+      end
+    end
+
   end
 
   describe "delete subscription" do

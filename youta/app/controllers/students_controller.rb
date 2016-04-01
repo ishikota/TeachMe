@@ -9,15 +9,22 @@ class StudentsController < ApplicationController
   end
 
   def create
-    lesson = Lesson.find(params[:lesson_id])
+    @lesson = Lesson.find(params[:lesson_id])
+    @students = @lesson.students
+
     students_csv = params[:students_csv]
-    # Create not registered student with initial password 'foobar'
-    students = read_csv_student_id(students_csv.path, "foobar")
-    # Make students subscribe the lesson
-    students.each { |student|
-      student.subscriptions.create(lesson_id: lesson.id)
-    }
-    redirect_to lesson_students_path(lesson)
+    if students_csv.nil?
+      flash.now[:warning] = "csvファイルを添付してください"
+      render 'index'
+    else
+      # Create not registered student with initial password 'foobar'
+      students = read_csv_student_id(students_csv.path, "foobar")
+      # Make students subscribe the lesson
+      students.each { |student|
+        student.subscriptions.create(lesson_id: @lesson.id)
+      }
+      redirect_to lesson_students_path(@lesson)
+    end
   end
 
   def destroy
