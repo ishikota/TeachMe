@@ -7,6 +7,12 @@ module StudentsHelper
     import_students(student_ids, initial_password)
   end
 
+  def make_subscriptions(lesson, students)
+    students
+      .map { |student| student.subscriptions.create(lesson_id: @lesson.id)}
+      .select { |record| record.valid? }
+  end
+
   private
     def import_students(student_ids, initial_password)
       def_name = "Sophian"

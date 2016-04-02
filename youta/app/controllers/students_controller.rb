@@ -20,9 +20,8 @@ class StudentsController < ApplicationController
       # Create not registered student with initial password 'foobar'
       students = read_csv_student_id(students_csv.path, "foobar")
       # Make students subscribe the lesson
-      students.each { |student|
-        student.subscriptions.create(lesson_id: @lesson.id)
-      }
+      new_subscriptions = make_subscriptions(@lesson, students)
+      flash[:success] = "#{new_subscriptions.size}人の生徒を受講者リストに追加しました"
       redirect_to lesson_students_path(@lesson)
     end
   end

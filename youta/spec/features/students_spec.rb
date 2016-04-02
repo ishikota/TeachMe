@@ -44,6 +44,19 @@ feature "Students", :type => :feature do
       end
     end
 
+    describe "flash message" do
+      before {
+        Subscription.create(user_id: editor.id, lesson_id: lesson.id)
+      }
+
+      it "should take care about already registered students" do
+        attach_students_file
+        click_button '追加'
+        expect(page).not_to have_content '3人'
+        expect(page).to have_content '2人'
+      end
+    end
+
   end
 
   describe "delete subscription" do
