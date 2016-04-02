@@ -45,17 +45,14 @@ feature "Lessons", :type => :feature do
     describe 'creates new lesson' do
       before {
         visit new_lesson_path
+      }
+      specify "new lesson is created" do
         select '火曜', from: "曜日"
         select '3限', from: "時間"
         fill_in '授業名', with: '情報理工学演習'
-        fill_in '授業内容(タグ)', with: 'ファイルの読み書き,サーバクライアント通信'
-        attach_students_file
         click_button '作成する'
-      }
-      specify "new lesson is created" do
+
         expect(page).to have_selector 'li.lesson-row', count:1
-        expect(Tag.count).to eq 2
-        expect(User.count).to eq 5
         expect(EditorRelationship.count).to eq 1
       end
     end
@@ -64,54 +61,24 @@ feature "Lessons", :type => :feature do
   describe "edit sansu lesson" do
     before { log_in(admin) }
     let!(:lesson) { FactoryGirl.create(:sansu) }
-    let!(:tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
-    let!(:hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
     before { visit edit_lesson_path(lesson) }
 
-    it "should display sansu lesson data on form by default" do
-      day_of_week = Lesson.day_of_week_to_str(lesson.day_of_week)
-      period = Lesson.period_to_str(lesson.period)
-      tag = [tashizan.name, hikizan.name].join(',')
-
-      expect(page).to have_select '曜日', selected: day_of_week
-      expect(page).to have_select '時間', selected: period
-      expect(page).to have_field '授業名', with: lesson.title
-      expect(page).to have_field '授業内容(タグ)', with: tag
-      expect(page).to have_field '受講者'
-      expect(page).to have_link '受講者一覧', href: students_lesson_path(lesson)
+    it "should have link to edit tag and students" do
+      expect(page).to have_link '編集する', href: lesson_students_path(lesson)
+      expect(page).to have_link '編集する', href: lesson_tags_path(lesson)
     end
 
-    describe "append new user to lesson" do
-      before { attach_students_file }
-      it "should create new subscription relationships" do
-        expect { click_button '更新する' }.to change { lesson.students.count }.from(0).to(3)
-      end
-      describe "when user already registered" do
-        before {
-          click_button '更新する'
-          attach_students_file
-        }
-        it "should not create duplicate subscriptions" do
-          expect { click_button '更新する' }.not_to change { lesson.students.count }
-        end
-      end
+    it "should edit sansu to sugaku" do
+      select '金曜', from: "曜日"
+      select '5限', from: "時間"
+      fill_in '授業名', with: '数学'
+      click_button '更新する'
+
+      expect(page).to have_select '曜日', selected: '金曜'
+      expect(page).to have_select '時間', selected: '5限'
+      expect(page).to have_field '授業名', with: '数学'
     end
 
-  end
-
-  describe "#students" do
-    before { log_in(admin) }
-    let!(:user1) { FactoryGirl.create(:kota) }
-    let!(:user2) { FactoryGirl.create(:ishimoto) }
-    let(:lesson) { Lesson.create(FactoryGirl.attributes_for(:lesson)) }
-    before {
-      Subscription.create(user_id: user1.id, lesson_id: lesson.id)
-      Subscription.create(user_id: user2.id, lesson_id: lesson.id)
-      visit students_lesson_path(lesson)
-    }
-    it "should display students who subscribes the lesson" do
-      expect(page).to have_selector 'li.user-row', count: 2
-    end
   end
 
   describe "authentication" do
@@ -122,9 +89,7 @@ feature "Lessons", :type => :feature do
       let!(:lecture) { user.lectures.create(FactoryGirl.attributes_for(:lesson)) }
       it { require_admin_and_redirect new_lesson_url }
       it { require_admin_and_redirect edit_lesson_url(lecture) }
-      it { require_admin_and_redirect students_lesson_path(lecture) }
     end
   end
-
 
 end

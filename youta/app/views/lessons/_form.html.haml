@@ -17,13 +17,15 @@
       = f.label :title, "授業名"
       = f.text_field :title
 
-    %fieldset.form-group.col-xs-12
-      = f.label :students_csv, "受講者"
-      = f.file_field :students_csv
+    - unless lesson.new_record?
+      %fieldset.form-group.col-xs-12
+        = f.label :students_csv, "受講者"
+        = link_to '編集する', lesson_students_path(lesson)
 
-    %fieldset.form-group.col-xs-12
-      = f.label :tags, "授業内容(タグ)"
-      = f.text_field :tags, value: lesson.tags_to_str
+      %fieldset.form-group.col-xs-12
+        = f.label :tags, "授業内容(タグ)"
+        = link_to '編集する', lesson_tags_path(lesson)
+
 
     %fieldset.form-group.col-xs-4.col-xs-offset-4.center
       = f.submit submit_msg, class: "btn btn-success"

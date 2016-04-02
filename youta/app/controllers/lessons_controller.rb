@@ -11,14 +11,12 @@ class LessonsController < ApplicationController
   end
   def create
     @lesson = Lesson.new(user_params)
-    students_csv = params[:lesson][:students_csv]
-    if students_csv.present? && @lesson.save
+    if @lesson.save
+      flash[:success] = "授業「#{@lesson.title}」を作成しました"
       EditorRelationship.create(lesson_id: @lesson.id, user_id: current_user.id)
-      read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
-      students = read_csv_student_id(students_csv.path, "foobar")
-      make_subscription(students)
       redirect_to lessons_path
     else
+      flash[:danger] = "授業の作成に失敗しました"
       render 'new'
     end
   end
@@ -28,14 +26,10 @@ class LessonsController < ApplicationController
   def update
     @lesson = Lesson.find(params[:id])
     if @lesson.update_attributes(user_params)
-      read_csv_tags_for_lesson(@lesson.id, params[:lesson][:tags])
-      students_csv = params[:lesson][:students_csv]
-      if students_csv.present?
-        students = read_csv_student_id(students_csv.path, "foobar")
-        make_subscription(students)
-      end
+      flash[:success] = "変更を保存しました"
       render 'edit'
     else
+      flash[:danger] = "変更を保存できませんでした"
       render 'edit'
     end
   end
@@ -49,12 +43,6 @@ class LessonsController < ApplicationController
   end
 
   private
-
-    def make_subscription(students)
-      students.each { |student|
-        student.subscriptions.create(lesson_id: @lesson.id)
-      }
-    end
 
     def user_params
       params.require(:lesson).permit(:day_of_week, :period, :title)
