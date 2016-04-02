@@ -1,0 +1,9 @@
+-# locals
+-# model : display error message on this model
+
+- binding.pry
+-if model.errors.any?
+  #error-explanation
+    %ul
+      - model.errors.hull_messages.each do |msg|
+        %li= msg
