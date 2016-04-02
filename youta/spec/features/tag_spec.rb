@@ -34,7 +34,13 @@ feature "Tags", type: :feature do
   end
 
   describe "#destroy" do
-    it "should delete the tag from tag list"
+    let(:target) { "#row-tag-#{tag_tashizan.id}" }
+    it "should delete the tag from tag list" do
+      within target do
+        click_on '削除'
+      end
+      expect(page).not_to have_selector target
+    end
   end
 
 end
