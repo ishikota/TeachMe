@@ -61,11 +61,15 @@ feature "Lessons", :type => :feature do
   describe "edit sansu lesson" do
     before { log_in(admin) }
     let!(:lesson) { FactoryGirl.create(:sansu) }
+    let!(:tag) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
+    let!(:student) { lesson.students.create(FactoryGirl.attributes_for(:kota)) }
     before { visit edit_lesson_path(lesson) }
 
     it "should have link to edit tag and students" do
       expect(page).to have_link '編集する', href: lesson_students_path(lesson)
       expect(page).to have_link '編集する', href: lesson_tags_path(lesson)
+      expect(page).to have_content tag.name
+      expect(page).to have_content '1人'
     end
 
     it "should edit sansu to sugaku" do

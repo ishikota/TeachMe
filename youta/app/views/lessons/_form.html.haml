@@ -19,12 +19,14 @@
 
     - unless lesson.new_record?
       %fieldset.form-group.col-xs-12
-        = f.label :students_csv, "受講者"
+        = f.label :students_csv, "受講者(#{lesson.students.size}人)"
         = link_to '編集する', lesson_students_path(lesson)
 
       %fieldset.form-group.col-xs-12
         = f.label :tags, "授業内容(タグ)"
         = link_to '編集する', lesson_tags_path(lesson)
+        %div
+          = render partial: 'tags/button_like_tag', collection: lesson.tags
 
 
     %fieldset.form-group.col-xs-4.col-xs-offset-4.center
