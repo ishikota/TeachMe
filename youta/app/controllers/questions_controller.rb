@@ -4,6 +4,11 @@ class QuestionsController < ApplicationController
 
   def index
     @lesson = Lesson.find(params[:lesson_id])
+    if params[:tag].present?
+      @questions = @lesson.questions.joins(:tags).merge(Tag.where(name: params[:tag]))
+    else
+      @questions = @lesson.questions
+    end
   end
 
   def new

@@ -22,14 +22,32 @@ feature "Questions", type: :feature do
   end
 
   describe "index page" do
-    let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    before { question.tag_relationships.create(tag_id: tag_tashizan.id) }
+    let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
+    before { question1.tag_relationships.create(tag_id: tag_tashizan.id) }
     it "should have question about 'Build error'" do
       visit lesson_questions_path(lesson)
       expect(page).to have_content 'Build error'
       expect(page).to have_content '足し算'
       expect(page).to have_content 'Kota Ishimoto さんが質問しました'
-      expect(page).to have_link nil, href: lesson_question_path(lesson, question)
+      expect(page).to have_link nil, href: lesson_question_path(lesson, question1)
+    end
+
+    describe "tag fileter" do
+      let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
+      before { question2.tag_relationships.create(tag_id: tag_hikizan.id) }
+      context "when filter is off" do
+        it "should display all questions" do
+          visit lesson_questions_path(lesson)
+          expect(page).to have_selector 'li.question-row', count: 2
+        end
+      end
+      context "when filter is on" do
+        it "should filter question to display" do
+          visit lesson_questions_path(lesson, tag: tag_hikizan.name)
+          expect(page).to have_selector 'li.question-row', count: 1
+          expect(page).to have_selector "#question-#{question2.id}"
+        end
+      end
     end
   end
 
