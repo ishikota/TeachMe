@@ -11,7 +11,7 @@
   %hr
   .chat-box
     = render @question.comments
-    - if current_user.lessons.include?(@lesson)
+    - if have_right_to_comment(@lesson, current_user)
       %hr
       .col-xs-10.col-xs-offset-1
         = form_for(Comment.new) do |f|

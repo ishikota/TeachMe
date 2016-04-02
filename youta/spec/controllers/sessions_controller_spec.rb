@@ -8,11 +8,20 @@ end
 RSpec.describe SessionsController, :type => :request do
 
   let(:user) { FactoryGirl.create(:user) }
-  before { log_in(user) }
 
   describe "#login" do
-    it "should save userid to session when success" do
-      expect(session[:user_id]).to eq user.id
+    context "by not logged-in user" do
+      it "should save userid to session when success" do
+        log_in(user)
+        expect(session[:user_id]).to eq user.id
+      end
+    end
+    context "by already logged-in user" do
+      before { log_in(user) }
+      it "should redirected to root" do
+        get login_path
+        expect(response).to redirect_to root_path
+      end
     end
   end
 

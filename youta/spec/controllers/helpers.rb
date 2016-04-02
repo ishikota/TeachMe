@@ -4,4 +4,8 @@ module ControllerSpecHelpers
     params = { session: { student_id: user.student_id, password: user.password } }
     post login_path, params
   end
+
+  def logout
+    delete logout_path
+  end
 end

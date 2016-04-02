@@ -5,4 +5,5 @@
       - if logged_in?
         %li= link_to "マイページ", user_path(current_user)
         %li= link_to "ログアウト", logout_path, method: :delete
-        %li= link_to '管理画面', management_path
+        - if current_user.admin?
+          %li= link_to '管理画面', management_path
