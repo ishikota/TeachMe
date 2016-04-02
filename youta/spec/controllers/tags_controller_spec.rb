@@ -12,12 +12,14 @@ RSpec.describe TagsController, type: :request do
   let!(:teacher) { FactoryGirl.create(:taro) }
   let!(:someone) { FactoryGirl.create(:kota) }
 
+  before { EditorRelationship.create(user_id: teacher.id, lesson_id: lesson.id) }
+
   describe "#index" do
     context "by not editor of this lesson" do
       before { log_in(someone) }
       it "should redirected" do
         get lesson_tags_path(lesson)
-        expect(page).to redirect_to root_path
+        expect(response).to redirect_to root_path
       end
     end
     context "by editor of this lesson" do
@@ -40,7 +42,7 @@ RSpec.describe TagsController, type: :request do
         }.not_to change { lesson.tags.size }
       end
     end
-    context "by not editor of this lesson" do
+    context "by editor of this lesson" do
       before { log_in(teacher) }
       it "should create new tag" do
         expect { 
@@ -59,7 +61,7 @@ RSpec.describe TagsController, type: :request do
         }.not_to change { lesson.tags.size }
       end
     end
-    context "by not editor of this lesson" do
+    context "by editor of this lesson" do
       before { log_in(teacher) }
       it "should delete the tag" do
         expect {
