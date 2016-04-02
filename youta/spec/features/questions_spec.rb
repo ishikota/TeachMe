@@ -47,6 +47,18 @@ feature "Questions", type: :feature do
       expect(page).to have_content lesson.title
       expect(page).to have_content '引き算ってなんですか?'
     end
+    describe "error handling" do
+      context "when question detail is empry" do
+        it "should display its error message" do
+          fill_in 'タイトル', with: '5-2が分かりません'
+          select '引き算', from: '授業項目'
+          click_button '質問する'
+          within '#error-explanation' do
+            expect(page).to have_selector 'li', count: 1
+          end
+        end
+      end
+    end
   end
 
   describe "#show" do
