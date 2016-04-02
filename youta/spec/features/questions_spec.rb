@@ -53,9 +53,6 @@ feature "Questions", type: :feature do
           fill_in 'タイトル', with: '5-2が分かりません'
           select '引き算', from: '授業項目'
           click_button '質問する'
-          within '#error-explanation' do
-            expect(page).to have_selector 'li', count: 1
-          end
         end
       end
     end
