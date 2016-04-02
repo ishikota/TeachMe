@@ -31,6 +31,16 @@ feature "Tags", type: :feature do
       click_on 'タグを追加する'
       expect(page).to have_content tag_name
     end
+
+    describe "flash message" do
+      it "should contain name of invalid tag" do
+        fill_in :tags, with: tag_tashizan.name
+        click_on 'タグを追加する'
+        within '.alert-danger' do
+          expect(page).to have_content tag_tashizan.name
+        end
+      end
+    end
   end
 
   describe "#destroy" do

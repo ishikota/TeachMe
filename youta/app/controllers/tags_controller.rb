@@ -1,4 +1,5 @@
 class TagsController < ApplicationController
+  include TagsHelper
   before_action :signed_in_user
   before_action :editor_check
 
@@ -11,10 +12,12 @@ class TagsController < ApplicationController
     @lesson = Lesson.find(params[:lesson_id])
     @tags = @lesson.tags
 
-    tag_strs = params[:tags].split(',').map{ |tag| tag.strip }
-    tag_strs.each { |tag|
-      @lesson.tags.create(name: tag)
-    }
+    invalid_tags = register_tags(@lesson, params[:tags])
+    if invalid_tags.empty?
+      flash[:success] = "タグを作成しました" unless params[:tags].empty?
+    else
+      flash[:danger] = "タグ [#{invalid_tags.join(',')}] は既に存在しています"
+    end
     redirect_to lesson_tags_path(@lesson)
   end
 
