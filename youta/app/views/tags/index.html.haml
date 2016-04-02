@@ -1,0 +1,11 @@
+%h1= "#{@lesson.title} のタグ"
+= form_tag(lesson_tags_path(@lesson), method: :post) do
+  %fieldset.form-group.center
+    = text_field_tag :tags, "", placeholder: "サーバクライアント通信,ファイルの読み書き"
+    = submit_tag 'タグを追加する', class: 'btn btn-success'
+    %small.text-muted タグを作ると質問の分類がしやすくなります，授業の内容毎にタグを作るのがオススメです.
+
+%hr
+
+%span タグ一覧
+= render @tags

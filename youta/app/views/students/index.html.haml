@@ -1,0 +1,13 @@
+%h1= "#{@lesson.title} の受講者一覧 (#{@students.size}人)"
+= form_tag(lesson_students_path(@lesson), method: :post, enctype: "multipart/form-data") do
+  %fieldset.form-group
+    = label_tag :students_csv, '受講者の追加'
+    %div.clearfix
+      = file_field_tag :students_csv, class: "col-xs-6 input-sm"
+      = submit_tag "追加", class: "col-xs-offset-1 col-xs-4 btn btn-success"
+    %small.text-muted 学生番号をカンマで区切ったcsvファイルを渡すと,その学生番号の生徒が受講者に追加されます
+
+%hr
+
+受講者一覧
+= render( partial: 'student', collection: @students, locals: { lesson: @lesson } ) || "受講者は登録されていません"
