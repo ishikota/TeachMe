@@ -30,7 +30,7 @@ class StudentsController < ApplicationController
   def destroy
     lesson = Lesson.find(params[:lesson_id])
     Subscription.find_by(user_id: params[:id], lesson_id: lesson.id).destroy
-    # TODO flash
+    flash[:success] = "受講者リストから削除しました"
     redirect_to lesson_students_path(lesson)
   end
 
