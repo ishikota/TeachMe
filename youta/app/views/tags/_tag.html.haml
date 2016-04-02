@@ -1,3 +1,3 @@
 %li{ id: "row-tag-#{tag.id}", class: ["tag-row", "list-group-item"] }
   %span= tag.name
-  = link_to '削除', lesson_tag_path(tag.lesson, tag), method: :delete
+  %span.pull-right= link_to '削除', lesson_tag_path(tag.lesson, tag), method: :delete

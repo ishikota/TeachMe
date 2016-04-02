@@ -1,4 +1,3 @@
 .back-link
   %span.h1= "#{@lesson.title} を編集する"
-  %span.h4.btn= link_to '受講者一覧を見る', students_lesson_path(@lesson)
 =render partial: 'form', locals: { lesson: @lesson, submit_msg: "更新する" }

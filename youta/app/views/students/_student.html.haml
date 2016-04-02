@@ -4,4 +4,4 @@
 %li{ id: "row-student-#{student.id}", class: ["user-row", "list-group-item"] }
   %span= student.student_id
   %span= student.name
-  = link_to "削除", lesson_student_path(lesson, student), method: :delete, data: { confirm: "生徒(#{student.student_id})を受講者から削除します" }
+  .pull-right= link_to "削除", lesson_student_path(lesson, student), method: :delete, data: { confirm: "生徒(#{student.student_id})を受講者から削除します" }
