@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :lessons do
     resources :questions
     resources :students, only: [:index, :create, :destroy]
+    resources :tags, only:[:index, :create, :destroy]
   end
   resources :comments, only: :create
 
