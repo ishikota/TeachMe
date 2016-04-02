@@ -1,2 +1,6 @@
 %h1= "#{@lesson.title} のタグ"
+= form_tag(lesson_tags_path(@lesson), method: :post) do
+  %fieldset.form-group
+    = text_field_tag :tags
+    = submit_tag 'タグを追加する'
 = render @tags

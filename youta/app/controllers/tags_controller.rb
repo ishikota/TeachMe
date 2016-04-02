@@ -15,7 +15,7 @@ class TagsController < ApplicationController
     tag_strs.each { |tag|
       @lesson.tags.create(name: tag)
     }
-    redirect_to 'index'
+    redirect_to lesson_tags_path(@lesson)
   end
 
   def destroy
@@ -26,7 +26,7 @@ class TagsController < ApplicationController
     if tag.lesson == @lesson
       tag.destroy
       flash[:success] = "タグ「#{tag.name}」を削除しました."
-      redirect_to 'index'
+      redirect_to lesson_tags_path(@lesson)
     else
       flash[:danger] = "不正な操作です"  # try to delete the tag not attched to @lesson
       redirect_to root_path

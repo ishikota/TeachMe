@@ -25,7 +25,12 @@ feature "Tags", type: :feature do
   end
 
   describe "#create" do
-    it "should append new tag on the tag list"
+    let(:tag_name) { "掛け算" }
+    it "should append new tag on the tag list" do
+      fill_in :tags, with: tag_name
+      click_on 'タグを追加する'
+      expect(page).to have_content tag_name
+    end
   end
 
   describe "#destroy" do
