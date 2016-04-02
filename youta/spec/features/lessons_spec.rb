@@ -7,10 +7,6 @@ end
 
 feature "Lessons", :type => :feature do
 
-  def attach_students_file
-    attach_file '受講者', "#{Rails.root}/spec/fixtures/lecture_students.csv"
-  end
-
   let!(:user) { FactoryGirl.create(:taro) }
   let!(:admin) { FactoryGirl.create(:admin) }
 

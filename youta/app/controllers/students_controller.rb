@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  include LessonEditHelper
+  include StudentsHelper
   before_action :signed_in_user
   before_action :editor_check
 
