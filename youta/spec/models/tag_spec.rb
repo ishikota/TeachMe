@@ -21,4 +21,15 @@ describe Tag do
     end
   end
 
+  describe "uniqueness check" do
+    let(:tag_name) { "sansu" }
+    let!(:lesson) { FactoryGirl.create(:lesson) }
+    before { Tag.create(name: tag_name, lesson_id: lesson.id) }
+
+    it "should prevent to create duplicate name tag" do
+      dup_tag = Tag.new(name: tag_name, lesson_id: lesson.id)
+      expect(dup_tag).not_to be_valid
+    end
+  end
+
 end

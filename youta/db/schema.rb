@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319095124) do
+ActiveRecord::Schema.define(version: 20160402051723) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "content"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20160319095124) do
   end
 
   add_index "tags", ["lesson_id"], name: "index_tags_on_lesson_id"
+  add_index "tags", ["name", "lesson_id"], name: "index_tags_on_name_and_lesson_id", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                            null: false
