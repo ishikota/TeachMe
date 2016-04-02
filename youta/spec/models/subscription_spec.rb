@@ -40,4 +40,13 @@ describe Subscription do
       it { expect { lesson.destroy }.to change { Subscription.count }.by(-1) }
     end
   end
+
+  describe "check uniquness" do
+    let!(:user) { User.create(name: "Kota Ishimoto", student_id: "A1178086", admin: true, password: 'foobar', password_digest: 'foobar') }
+    let!(:lesson) { Lesson.create(title: "sansu", day_of_week: 0, period: 1) }
+    it "should prevent creating duplivate subscription" do
+      expect { Subscription.create(user_id: user.id, lesson_id: lesson.id) }.to change { Subscription.count }
+      expect { Subscription.create(user_id: user.id, lesson_id: lesson.id) }.not_to change { Subscription.count }
+    end
+  end
 end

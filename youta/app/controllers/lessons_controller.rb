@@ -1,5 +1,4 @@
 class LessonsController < ApplicationController
-  include LessonEditHelper
   before_action :signed_in_user
   before_action :admin_user, except: :index
 
@@ -36,10 +35,6 @@ class LessonsController < ApplicationController
   def destroy
     Lesson.find(params[:id]).destroy
     redirect_to lessons_path
-  end
-
-  def students
-    @lesson = Lesson.find(params[:id])
   end
 
   private
