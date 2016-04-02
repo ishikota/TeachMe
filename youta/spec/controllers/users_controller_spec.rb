@@ -35,7 +35,10 @@ RSpec.describe UsersController, :type => :request do
 
   describe "#management" do
     let!(:admin) { FactoryGirl.create(:admin) }
-    before { log_in(admin) }
+    before {
+      logout
+      log_in(admin)
+    }
     it "should assign user's lectures" do
       get management_path
       expect(assigns(:user)).to eq admin

@@ -90,6 +90,15 @@ feature "Questions", type: :feature do
         it "should not see comment form" do
           expect(page).not_to have_selector 'form.new_comment'
         end
+        context "but editor" do
+          before {
+            EditorRelationship.create(lesson_id: lesson.id, user_id: user.id)
+            visit current_path
+          }
+          it "should see comment form" do
+            expect(page).to have_selector 'form.new_comment'
+          end
+        end
       end
     end
   end
