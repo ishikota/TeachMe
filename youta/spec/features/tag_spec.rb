@@ -12,10 +12,16 @@ feature "Tags", type: :feature do
   let!(:tag_tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
   let!(:tag_hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
 
-  before { log_in(teacher) }
+  before {
+    EditorRelationship.create(user_id: teacher.id, lesson_id: lesson.id)
+    log_in(teacher)
+    visit lesson_tags_path(lesson)
+  }
 
   describe "#index" do
-    it "should display tags attached to the lesson"
+    it "should display tags attached to the lesson" do
+      expect(page).to have_content tag_tashizan.name
+    end
   end
 
   describe "#create" do
