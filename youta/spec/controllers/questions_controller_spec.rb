@@ -41,6 +41,14 @@ RSpec.describe QuestionsController, :type => :request do
       expect(question.user).to eq user
       expect(response).to redirect_to lesson_question_path(lesson.id, question.id)
     end
+    context "when content is empty" do
+      before { params[:comment][:content] = nil }
+      it "should not create new question" do
+        expect {
+          post lesson_questions_path(lesson), params
+        }.not_to change { Question.count }
+      end
+    end
   end
 
   describe "#show" do

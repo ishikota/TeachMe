@@ -11,15 +11,14 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    title = params[:question][:title]
-    comment = params[:comment][:content]
-    tag = Tag.find(params[:question][:tags])
     @lesson = Lesson.find(params[:lesson_id])
-    @question = current_user.post_question(params[:lesson_id], params[:question][:title], comment, tag)
-    if @question
+    @question = Question.new(question_params)
+    if params[:comment][:content].present? && @question.save
+      @question.tag_relationships.create(tag_id: params[:question][:tags].to_i)
+      @question.comments.create(user_id: current_user.id, content: params[:comment][:content])
       redirect_to lesson_question_path(@lesson, @question)
     else
-      # TODO not yet tested because of post_question
+      flash[:warning] = "質問の投稿に失敗しました."
       render :new
     end
   end
@@ -28,5 +27,11 @@ class QuestionsController < ApplicationController
     @lesson = Lesson.find(params[:lesson_id])
     @question = Question.find(params[:id])
   end
+
+  private
+    def question_params
+      params.require(:question).permit(:title)
+          .merge( user_id: current_user.id, lesson_id: params[:lesson_id] )
+    end
 
 end
