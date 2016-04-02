@@ -3,10 +3,8 @@ class CommentsController < ApplicationController
   def create
     question = Question.find(params[:comment][:question_id])
     comment = Comment.new(comment_params)
-    if comment.save
-      #TODO success message in flash
-    else
-      #TODO failure message in flash
+    unless comment.save
+      flash[:warning] = "コメントに何も入力されていません"
     end
     redirect_to lesson_question_path(question.lesson, question)
   end
