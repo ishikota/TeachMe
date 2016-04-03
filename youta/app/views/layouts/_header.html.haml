@@ -1,9 +1,15 @@
 %header.navbar.navbar-fixed-top.navbar-default
   %div.container
     = link_to 'Youta', root_path, id: 'logo'
-    %ul.nav.navbar-nav.navbar-right
-      - if logged_in?
-        %li= link_to "マイページ", user_path(current_user)
-        %li= link_to "ログアウト", logout_path, method: :delete
-        - if current_user.admin?
-          %li= link_to '管理画面', management_path
+    .navbar-header
+      %button.navbar-toggle(data-toggle="collapse" data-target="#gnavi")
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+    #gnavi.collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        - if logged_in?
+          %li= link_to "マイページ", user_path(current_user)
+          %li= link_to "ログアウト", logout_path, method: :delete
+          - if current_user.admin?
+            %li= link_to '管理画面', management_path
