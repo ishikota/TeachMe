@@ -21,10 +21,25 @@ describe CommentsController, type: :request do
       expect(Comment.find_by_content("wao")).to be_present
       expect(response).to redirect_to lesson_question_path(lesson, question)
     end
-    it "should not post comment on not subscribing lesson" do
-      Subscription.find_by_user_id_and_lesson_id(user.id, lesson.id).destroy
-      post comments_path, params
-      expect(Comment.find_by_content("wao")).to be_nil
+    describe "validation" do
+      context "post by not subscribing student" do
+        before {
+          Subscription.find_by_user_id_and_lesson_id(user.id, lesson.id).destroy
+        }
+        it "should not post comment on not subscribing lesson" do
+          post comments_path, params
+          expect(Comment.find_by_content("wao")).to be_nil
+        end
+        context "but editor of the lesson" do
+          before {
+            EditorRelationship.create(user_id: user.id, lesson_id: lesson.id)
+          }
+          it "should post new comment" do
+            post comments_path, params
+            expect(Comment.find_by_content("wao")).to be_present
+          end
+        end
+      end
     end
   end
 end

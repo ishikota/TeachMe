@@ -17,8 +17,13 @@ class CommentsController < ApplicationController
     #before_action
     def subscribing
       question = Question.find(params[:comment][:question_id])
-      unless logged_in? && current_user.lessons.include?(question.lesson)
+      unless logged_in? && teacher_or_student_of(question.lesson)
         redirect_to root_path, notice: '受講していない授業にコメントできません'
       end
     end
+
+    def teacher_or_student_of(lesson)
+      current_user.lessons.include?(lesson) || current_user.lectures.include?(lesson)
+    end
+
 end
