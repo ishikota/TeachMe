@@ -6,10 +6,17 @@
   position: relative;
   display: block;
   padding: 10px 15px;
+  margin-bottom: -1px;
   background-color: #fff;
+  border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
+}
+.lesson-row-tab {
+  @extend .lesson-row;
+  margin-bottom: 0px;
+  border-top: 0px solid #ddd;
 }
 .lesson-schedule {
   float: left;

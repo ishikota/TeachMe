@@ -4,4 +4,4 @@
 %ul.nav.nav-tabs
   %li.active
     %a 受講中の授業
-= render(partial: @user.lessons, locals: { item_link: method(:lesson_questions_path) })
+= render(partial: @user.lessons, locals: { item_link: method(:lesson_questions_path), css: "tab" })
