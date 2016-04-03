@@ -88,6 +88,15 @@ input {
 }
 
 /* chat bubble */
+
+.comment-info {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.chat-area {
+  padding: 8px;
+}
 .chat-box {
     width: 100%;
     height: auto;
@@ -97,43 +106,43 @@ input {
 .chat-bubble:before {
     content: "";
     position: absolute;
-    top: 50%; left: -10px;
+    top: -10px; left: 10px;
     margin-top: -10px;
     display: block;
     width: 0px;
     height: 0px;
     border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent #ddd transparent #ddd;
+    border-width: 10px 10px 10px 10px;
+    border-color: transparent transparent #ddd transparent;
 }
 .chat-bubble {
     display: inline-block; /*コメントの文字数に合わせて可変*/
     padding: 15px 20px;
     margin-left: 20px;
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius: 4px;
     position: relative;
     border: solid 1px #ddd;
   }
 .chat-bubble:after {
     content: "";
     position: absolute;
-    top: 50%; left: -9px;
+    top: -9px; left: 10px;
     margin-top: -10px;
     display: block;
     width: 0px;
     height: 0px;
     border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent #fff transparent #fff;
+    border-width: 10px 10px 10px 10px;
+    border-color: transparent transparent #fff transparent;
 }
 .chat-bubble.me {
   background-color: #BCF5A9;
   border: solid 1px #BCF5A9;
 }
 .chat-bubble.me:before {
-  border-color: transparent #BCF5A9 transparent #BCF5A9;
+  border-color: transparent transparent #BCF5A9 transparent;
 }
 .chat-bubble.me:after {
-  border-color: transparent #BCF5A9 transparent #BCF5A9;
+  border-color: transparent transparent #BCF5A9 transparent;
 }
