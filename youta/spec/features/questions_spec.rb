@@ -47,12 +47,17 @@ feature "Questions", type: :feature do
         end
       end
       context "when filter is on" do
+        before { visit lesson_questions_path(lesson, tag: tag_hikizan.name) }
         it "should filter question to display" do
-          visit lesson_questions_path(lesson, tag: tag_hikizan.name)
           expect(page).to have_selector 'li.question-row', count: 1
           expect(page).to have_selector "#question-#{question2.id}"
           expect(page).to have_selector '.current-tag', text: tag_hikizan.name
-          expect(page).to have_selector 'li'
+        end
+        it "should not set html paramter when all-tag is clicked" do
+          # BUT  : /lessons/:id/questions?tag=all-tag
+          # GOOD : /lessons/:id/questions
+          click_link '全ての質問'
+          expect(current_url).to eq lesson_questions_url(lesson)
         end
       end
     end
