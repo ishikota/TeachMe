@@ -31,7 +31,7 @@ feature "Users", :type => :feature do
       fill_in 'パスワード', with: password
       fill_in 'パスワードの確認', with: password
       click_on '更新'
-      expect(page).not_to have_content '登録情報の編集'
+      expect(page).not_to have_content 'プロフィールの編集'
       expect(page).to have_content new_name
     end
     it "should fail to update" do
@@ -40,7 +40,7 @@ feature "Users", :type => :feature do
       fill_in 'パスワード', with: password
       fill_in 'パスワードの確認', with: 'barfoo'
       click_on '更新'
-      expect(page).to have_content '登録情報の編集'
+      expect(page).to have_content 'プロフィールの編集'
     end
   end
 

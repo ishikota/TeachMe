@@ -3,4 +3,4 @@
 .chat-area
   .comment-info
     = comment.user.name
-  %div{ class: bubble_class }= comment.content
+  %div{ class: bubble_class }= comment.content.gsub("\n", "<br />").html_safe
