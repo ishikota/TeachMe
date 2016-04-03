@@ -1,3 +1,3 @@
-.back-link
-  %span.h1= "#{@lesson.title} を編集する"
+.page-top-info
+  %span.h3= "#{@lesson.title} を編集する"
 =render partial: 'form', locals: { lesson: @lesson, submit_msg: "更新する" }

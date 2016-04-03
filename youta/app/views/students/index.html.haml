@@ -1,4 +1,5 @@
-%h1= "#{@lesson.title} の受講者一覧 (#{@students.size}人)"
+.page-top-info
+  %h3= "#{@lesson.title} の受講者一覧 (#{@students.size}人)"
 = form_tag(lesson_students_path(@lesson), method: :post, enctype: "multipart/form-data") do
   %fieldset.form-group
     = label_tag :students_csv, '受講者の追加'
@@ -9,5 +10,5 @@
 
 %hr
 
-受講者一覧
+%h5.student-list-title 受講者一覧
 = render( partial: 'student', collection: @students, locals: { lesson: @lesson } ) || "受講者は登録されていません"
