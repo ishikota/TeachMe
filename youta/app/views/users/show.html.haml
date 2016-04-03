@@ -1,6 +1,6 @@
-%div.back-link
+%div.profile-top
   %span.h3= "#{@user.name} さんのマイページ"
-  = link_to 'プロフィールの編集', edit_user_path(@user), class: "btn btn-link"
+  = link_to 'プロフィールを編集する', edit_user_path(@user), class: "btn btn-link"
 %ul.nav.nav-tabs
   %li.active
     %a 受講中の授業
