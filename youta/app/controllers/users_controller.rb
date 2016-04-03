@@ -11,10 +11,10 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(user_params)
-      #TODO flash
+      flash[:success] = "登録情報を更新しました"
       redirect_to user_path(@user)
     else
-      #TODO flash
+      flash[:warning] = "登録情報を更新できませんでした"
       render 'edit'
     end
   end
