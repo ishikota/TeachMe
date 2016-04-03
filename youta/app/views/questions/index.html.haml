@@ -8,10 +8,8 @@
 
   %ul.dropdown-menu
     - @rest_tags.each do |tag|
-      -# use option for spec/features/questions: it "should not set html paramter when all-tag is clicked
-      - option = tag == '全ての質問' ? {} : { tag: tag }
       %li
-        %a{href: lesson_questions_path(@lesson, option)}= tag
+        %a{href: tag_link(tag, @lesson)}= tag
 
 %ul{ id: "question-list", class: "list-group" }
   = render(@questions) || "まだ質問が投稿されていません．"
