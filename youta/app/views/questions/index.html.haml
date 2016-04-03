@@ -1,6 +1,8 @@
-%div.question-top
-  %span.h1= "#{@lesson.title} の質問"
+%div.page-top-info.question-top
+  %span.h3= "#{@lesson.title} の質問"
   = link_to '質問する', { controller: :questions, action: :new}, class: "btn-post btn btn-success"
+
+%hr
 
 .btn-group.tag-selector
   %button.btn.btn-primary.current-tag= @current_tag
