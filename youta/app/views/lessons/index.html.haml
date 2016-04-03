@@ -1,3 +1,4 @@
-%h1 授業一覧
+%div.page-top-info
+  %h3 授業一覧
 %ul{ class: "list-group" }
   = render(partial: @lessons, locals: { item_link: method(:lesson_questions_path) }) || '授業は登録されていません.'

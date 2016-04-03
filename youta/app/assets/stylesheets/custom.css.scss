@@ -11,7 +11,7 @@
 /* universal */
 
 body {
-  padding-top: 60px;
+  padding-top: 50px;
 }
 
 section {
@@ -30,19 +30,25 @@ textarea {
   margin-bottom: 10px;
 }
 
+/* common pattern */
+.page-top-info {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
 /* header */
 
 #logo {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: #fff;
+  color: #4cae4c;
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
   &:hover {
-    color: #fff;
+    color: #81C784;
     text-decoration: none;
   }
 }
@@ -77,41 +83,66 @@ input {
 }
 
 .back-link {
+  margin-top: 8px;
   margin-bottom: 16px;
 }
 
 /* chat bubble */
+
+.comment-info {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.chat-area {
+  padding: 8px;
+}
 .chat-box {
     width: 100%;
     height: auto;
     overflow: hidden; /*floatの解除*/
     margin-bottom: 20px;
 }
-.chat-bubble {
-    display: inline-block; /*コメントの文字数に合わせて可変*/
-    padding: 15px 20px;
-    margin-left: 20px;
-    margin-top: 10px;
-    border-radius: 10px;
-    position: relative;
-    background-color: #D9F0FF;
-  }
-.chat-bubble:after {
+.chat-bubble:before {
     content: "";
     position: absolute;
-    top: 50%; left: -10px;
+    top: -10px; left: 10px;
     margin-top: -10px;
     display: block;
     width: 0px;
     height: 0px;
     border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent #D9F0FF transparent transparent;
+    border-width: 10px 10px 10px 10px;
+    border-color: transparent transparent #ddd transparent;
+}
+.chat-bubble {
+    display: inline-block; /*コメントの文字数に合わせて可変*/
+    padding: 15px 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 4px;
+    position: relative;
+    border: solid 1px #ddd;
+  }
+.chat-bubble:after {
+    content: "";
+    position: absolute;
+    top: -9px; left: 10px;
+    margin-top: -10px;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 10px 10px 10px 10px;
+    border-color: transparent transparent #fff transparent;
 }
 .chat-bubble.me {
-    background-color: #BCF5A9;
+  background-color: #BCF5A9;
+  border: solid 1px #BCF5A9;
 }
-
+.chat-bubble.me:before {
+  border-color: transparent transparent #BCF5A9 transparent;
+}
 .chat-bubble.me:after {
-  border-color: transparent #BCF5A9 transparent transparent;
+  border-color: transparent transparent #BCF5A9 transparent;
 }

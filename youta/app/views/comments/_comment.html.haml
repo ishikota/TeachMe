@@ -1,5 +1,6 @@
 - bubble_class = ["chat-bubble"]
 - bubble_class << "me" if current_user == comment.user
 .chat-area
-  %span= comment.user.name
+  .comment-info
+    = comment.user.name
   %div{ class: bubble_class }= comment.content

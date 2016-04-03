@@ -1,6 +1,10 @@
 -# local variable
 -# item_link : method object which returns item link with lesson object as argument
-%li{ id: "lesson-#{lesson.id}", class: ["lesson-row", "list-group-item"] }
+-# css : array of css class to apply on li
+- li_class = "lesson-row"
+- li_class << '-' << css if defined?(css) # ex. lesson-row-tab
+
+%li{ id: "lesson-#{lesson.id}", class: li_class }
   %div
     .lesson-schedule
       %span= Lesson.day_of_week_to_str lesson.day_of_week

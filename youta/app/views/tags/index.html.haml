@@ -1,4 +1,5 @@
-%h1= "#{@lesson.title} のタグ"
+.page-top-info
+  %h3= "#{@lesson.title} のタグ"
 = form_tag(lesson_tags_path(@lesson), method: :post) do
   %fieldset.form-group.center
     = text_field_tag :tags, "", placeholder: "サーバクライアント通信,ファイルの読み書き"
