@@ -1,6 +1,6 @@
 -# local variable
 -# item_link : method object which returns item link with lesson object as argument
-%li{ id: "lesson-#{lesson.id}", class: ["lesson-row", "list-group-item"] }
+%li{ id: "lesson-#{lesson.id}", class: ["lesson-row"] }
   %div
     .lesson-schedule
       %span= Lesson.day_of_week_to_str lesson.day_of_week
