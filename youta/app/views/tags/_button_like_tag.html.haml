@@ -1,1 +1,2 @@
-%span.btn.btn-primary= button_like_tag.name
+- tag = button_like_tag
+%span= link_to(tag.name, tag_link(tag), class: "btn btn-primary")

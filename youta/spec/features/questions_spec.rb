@@ -22,14 +22,44 @@ feature "Questions", type: :feature do
   end
 
   describe "index page" do
-    let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    before { question.tag_relationships.create(tag_id: tag_tashizan.id) }
+    let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
+    before { question1.tag_relationships.create(tag_id: tag_tashizan.id) }
     it "should have question about 'Build error'" do
       visit lesson_questions_path(lesson)
       expect(page).to have_content 'Build error'
       expect(page).to have_content '足し算'
       expect(page).to have_content 'Kota Ishimoto さんが質問しました'
-      expect(page).to have_link nil, href: lesson_question_path(lesson, question)
+      expect(page).to have_link nil, href: lesson_question_path(lesson, question1)
+    end
+
+    describe "tag fileter" do
+      let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
+      before { question2.tag_relationships.create(tag_id: tag_hikizan.id) }
+      context "when filter is off" do
+        it "should display all questions" do
+          visit lesson_questions_path(lesson)
+          expect(page).to have_selector 'li.question-row', count: 2
+          expect(page).to have_selector '.current-tag', text: "全ての質問"
+          within 'ul.dropdown-menu' do
+            expect(page).to have_link tag_tashizan.name, href: lesson_questions_path(lesson, tag: tag_tashizan.name)
+            expect(page).to have_link tag_hikizan.name, href: lesson_questions_path(lesson, tag: tag_hikizan.name)
+          end
+        end
+      end
+      context "when filter is on" do
+        before { visit lesson_questions_path(lesson, tag: tag_hikizan.name) }
+        it "should filter question to display" do
+          expect(page).to have_selector 'li.question-row', count: 1
+          expect(page).to have_selector "#question-#{question2.id}"
+          expect(page).to have_selector '.current-tag', text: tag_hikizan.name
+        end
+        it "should not set html paramter when all-tag is clicked" do
+          # BUT  : /lessons/:id/questions?tag=all-tag
+          # GOOD : /lessons/:id/questions
+          click_link '全ての質問'
+          expect(current_url).to eq lesson_questions_url(lesson)
+        end
+      end
     end
   end
 

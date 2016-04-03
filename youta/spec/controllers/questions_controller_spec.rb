@@ -15,9 +15,26 @@ RSpec.describe QuestionsController, :type => :request do
   describe "#index" do
     let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
 
-    it "shoul assigns lesson to @lesson" do
-      get lesson_questions_path(lesson)
-      expect(assigns(:lesson)).to eq lesson
+    context "without tag filter" do
+      it "should assigns lesson to @lesson" do
+        get lesson_questions_path(lesson)
+        expect(assigns(:lesson)).to eq lesson
+        expect(assigns(:questions)).to eq lesson.questions
+        expect(assigns(:current_tag)).to eq "全ての質問"
+        expect(assigns(:rest_tags)).to eq [tag.name]
+      end
+    end
+
+    context "with tag filter" do
+      let!(:tag2) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
+      before { TagRelationship.create(tag_id: tag2.id, question_id: question2.id) }
+      it "should assign only filtered questions" do
+        get lesson_questions_path(lesson, tag: tag2.name)
+        expect(assigns(:questions)).not_to include question1
+        expect(assigns(:questions)).to include question2
+        expect(assigns(:current_tag)).to eq tag2.name
+        expect(assigns(:rest_tags)).to eq ["全ての質問", tag.name]
+      end
     end
   end
 
