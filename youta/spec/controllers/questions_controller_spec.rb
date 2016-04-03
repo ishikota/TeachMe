@@ -20,6 +20,8 @@ RSpec.describe QuestionsController, :type => :request do
         get lesson_questions_path(lesson)
         expect(assigns(:lesson)).to eq lesson
         expect(assigns(:questions)).to eq lesson.questions
+        expect(assigns(:current_tag)).to eq "全ての質問"
+        expect(assigns(:rest_tags)).to eq [tag.name]
       end
     end
 
@@ -30,6 +32,8 @@ RSpec.describe QuestionsController, :type => :request do
         get lesson_questions_path(lesson, tag: tag2.name)
         expect(assigns(:questions)).not_to include question1
         expect(assigns(:questions)).to include question2
+        expect(assigns(:current_tag)).to eq tag2.name
+        expect(assigns(:rest_tags)).to eq ["全ての質問", tag.name]
       end
     end
   end

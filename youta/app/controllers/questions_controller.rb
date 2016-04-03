@@ -3,12 +3,14 @@ class QuestionsController < ApplicationController
   before_action :signed_in_user
 
   def index
+    all_tag = "全ての質問"
     @lesson = Lesson.find(params[:lesson_id])
     if params[:tag].present?
       @questions = @lesson.questions.joins(:tags).merge(Tag.where(name: params[:tag]))
     else
       @questions = @lesson.questions
     end
+    @current_tag, @rest_tags = manage_tags(@lesson.tags, params[:tag], all_tag)
   end
 
   def new

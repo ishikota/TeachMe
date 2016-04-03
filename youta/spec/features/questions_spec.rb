@@ -39,6 +39,11 @@ feature "Questions", type: :feature do
         it "should display all questions" do
           visit lesson_questions_path(lesson)
           expect(page).to have_selector 'li.question-row', count: 2
+          expect(page).to have_selector '.current-tag', text: "全ての質問"
+          within 'ul.dropdown-menu' do
+            expect(page).to have_link tag_tashizan.name, href: lesson_questions_path(lesson, tag: tag_tashizan.name)
+            expect(page).to have_link tag_hikizan.name, href: lesson_questions_path(lesson, tag: tag_hikizan.name)
+          end
         end
       end
       context "when filter is on" do
@@ -46,6 +51,8 @@ feature "Questions", type: :feature do
           visit lesson_questions_path(lesson, tag: tag_hikizan.name)
           expect(page).to have_selector 'li.question-row', count: 1
           expect(page).to have_selector "#question-#{question2.id}"
+          expect(page).to have_selector '.current-tag', text: tag_hikizan.name
+          expect(page).to have_selector 'li'
         end
       end
     end
