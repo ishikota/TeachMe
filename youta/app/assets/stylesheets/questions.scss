@@ -2,7 +2,19 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#question-list {
+.question-top {
+  padding-top: 16px;
+  .btn-post {
+    margin-left: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.tag-selector {
   margin-top: 16px;
+}
+
+#question-list {
+  margin-top: 8px;
 }
 

@@ -1,9 +1,10 @@
-%h1= "#{@lesson.title} の質問"
-= link_to '質問する', { controller: :questions, action: :new}, class: "btn btn-success"
+%div.question-top
+  %span.h1= "#{@lesson.title} の質問"
+  = link_to '質問する', { controller: :questions, action: :new}, class: "btn-post btn btn-success"
 
-.btn-group
-  %button.btn.btn-danger.current-tag= @current_tag
-  %button.btn.btn-danger.dropdown-toggle(data-toggle="dropdown")
+.btn-group.tag-selector
+  %button.btn.btn-primary.current-tag= @current_tag
+  %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
     %span.caret
 
   %ul.dropdown-menu
