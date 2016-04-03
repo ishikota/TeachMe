@@ -1,4 +1,18 @@
 %h1= "#{@lesson.title} の質問"
 = link_to '質問する', { controller: :questions, action: :new}, class: "btn btn-success"
+
+.btn-group
+  %button.btn.btn-danger Current tag
+  %button.btn.btn-danger.dropdown-toggle(data-toggle="dropdown")
+    %span.caret
+
+  %ul.dropdown-menu
+    %li
+      %a{href:'?tag=tag1'} tag1
+    %li
+      %a{href:'?tag=tag2'} tag2
+    %li
+      %a{href:'?tag=tag3'} tag3
+
 %ul{ id: "question-list", class: "list-group" }
   = render(@questions) || "まだ質問が投稿されていません．"
