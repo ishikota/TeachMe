@@ -1,3 +1,6 @@
+server '52.196.77.85', user: 'ishikota', roles: %w{app db web}
+set :ssh_options, keys: '~/.ssh/youta_key_rsa'
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
