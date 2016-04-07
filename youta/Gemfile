@@ -19,6 +19,10 @@ group :development, :test do
   gem 'spring',      '1.1.3'
   gem 'rspec-rails', '3.1'
   gem 'pry-rails'
+  gem 'capistrano',         '3.4.0'
+  gem 'capistrano-bundler', '1.1.4'
+  gem 'capistrano-rails',   '1.1.6'
+  gem 'capistrano-rbenv',   '2.0.4'
 end
 
 group :test do
