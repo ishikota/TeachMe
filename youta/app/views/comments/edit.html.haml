@@ -11,7 +11,10 @@
   %hr
   .chat-box
     - @question.comments.each do |comment|
-      = render partial: 'comment', locals: { comment: comment }
+      - if comment == @comment
+        = render partial: 'comment_edit', locals: { comment: comment }
+      - else
+        = render partial: 'comment', locals: { comment: comment }
     - if have_right_to_comment(@lesson, current_user)
       %hr
       .col-xs-10.col-xs-offset-1

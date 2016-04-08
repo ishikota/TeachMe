@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
   resources :comments, only: [:create, :edit, :update]
 
-  resources :users, only: [:show, :edit]
+  resources :users, only: [:show, :edit, :update]
   get 'management' => 'users#manage'
 
   # The priority is based upon order of creation: first created -> highest priority.

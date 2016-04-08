@@ -126,6 +126,10 @@ feature "Questions", type: :feature do
         end
       end
       describe "#edit" do
+        before {
+          Subscription.create(user_id: user.id, lesson_id: lesson.id);
+          visit current_path  # reload screen
+        }
         context "by not author" do
           it "should not enabled" do
             within "#comment-#{someone_comment.id}" do
@@ -136,13 +140,13 @@ feature "Questions", type: :feature do
         context "by author" do
           let(:update_comment) { "Please check you have cleaned up." }
           it "should update comment" do
-            within "#comment-#{my_comment.id}" do
-              click_on '編集する'
-              fill_in 'comment[content]', with: update_comment
-              click_on '保存する'
-              my_comment.reload
-              expect(my_comment.content).to eq update_comment
+            click_on '編集する'
+            within '.chat-bubble.me.edit' do
+              fill_in 'comment_content', with: update_comment
             end
+            click_on '更新'
+            my_comment.reload
+            expect(my_comment.content).to eq update_comment
           end
         end
       end
