@@ -2,7 +2,8 @@
   %div{ id: "comment-#{comment.id}", class: "comment-info" }
     = comment.user.name
     - if current_user == comment.user
-      = link_to '編集する', edit_comment_path(comment), class: "text-muted"
+      = link_to '編集をやめる',
+            lesson_question_path(comment.question.lesson, comment.question), class: "comment-edit-link"
   .chat-bubble.me.edit
     = form_tag comment_path(comment), method: :put do
       = hidden_field_tag 'comment[question_id]', comment.question.id

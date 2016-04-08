@@ -4,5 +4,5 @@
   %div{ id: "comment-#{comment.id}", class: "comment-info" }
     = comment.user.name
     - if current_user == comment.user
-      = link_to '編集する', edit_comment_path(comment), class: "text-muted"
+      = link_to '編集する', edit_comment_path(comment), class: "comment-edit-link"
   %div{ class: bubble_class }= comment.content.gsub("\n", "<br />").html_safe
