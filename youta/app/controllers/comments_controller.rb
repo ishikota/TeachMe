@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :subscribing
-  before_action :author_check, only: :edit
+  before_action :author_check, only: [:edit, :update]
 
   def create
     question = Question.find(params[:comment][:question_id])
@@ -17,6 +17,21 @@ class CommentsController < ApplicationController
     @lesson = @question.lesson
   end
 
+  def update
+    @comment = Comment.find(params[:id])
+    @question = @comment.question
+    @lesson = @question.lesson
+
+    @comment.content = params[:comment][:content]
+    if @comment.save
+      flash[:success] = "コメントを更新しました"
+      redirect_to lesson_question_path(@lesson, @question)
+    else
+      flash[:warning] = "コメントを更新できませんでした"
+      render 'edit'
+    end
+  end
+
   private
     def comment_params
       params.require(:comment).permit(:content, :user_id, :question_id)
@@ -24,7 +39,7 @@ class CommentsController < ApplicationController
 
     #before_action
     def subscribing
-      if params[:comment].present?
+      if params[:comment].present? && params[:comment][:question_id].present?
         question = Question.find(params[:comment][:question_id])
       else
         question = Comment.find(params[:id]).question
