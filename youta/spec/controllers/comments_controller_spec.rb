@@ -49,10 +49,11 @@ describe CommentsController, type: :request do
   end
 
   describe "#edit" do
+    let(:params) { { comment: { question_id: question.id } } }
 
     context "by author" do
       it "should assign comment" do
-        get edit_comment_path(my_comment)
+        get edit_comment_path(my_comment), params
         expect(assigns(:lesson)).to eq my_comment.question.lesson
         expect(assigns(:question)).to eq my_comment.question
         expect(assigns(:comment)).to eq my_comment
@@ -61,7 +62,7 @@ describe CommentsController, type: :request do
 
     context "by someone" do
       it "should redirect" do
-        get edit_comment_path(someone_comment)
+        get edit_comment_path(someone_comment), params
         expect(response).to redirect_to lesson_question_path(lesson, question)
       end
     end
@@ -69,7 +70,7 @@ describe CommentsController, type: :request do
 
   describe "#update" do
     let(:update_comment) { "bar" }
-    let(:params) { { comment: { content: update_comment } } }
+    let(:params) { { comment: { content: update_comment, question_id: question.id } } }
 
     context "by author" do
       it "should update" do

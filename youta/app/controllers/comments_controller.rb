@@ -39,11 +39,8 @@ class CommentsController < ApplicationController
 
     #before_action
     def subscribing
-      if params[:comment].present? && params[:comment][:question_id].present?
-        question = Question.find(params[:comment][:question_id])
-      else
-        question = Comment.find(params[:id]).question
-      end
+      question = Question.find(params[:comment][:question_id]) if params[:comment].present?
+      question ||= Comment.find(params[:id]).question
 
       unless logged_in? && teacher_or_student_of(question.lesson)
         redirect_to root_path, notice: '受講していない授業にコメントできません'
