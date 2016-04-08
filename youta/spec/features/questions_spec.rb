@@ -80,8 +80,10 @@ feature "Questions", type: :feature do
   end
 
   describe "#show" do
+    let!(:someone) { FactoryGirl.create(:taro) }
     let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    let!(:comment) { user.comments.create(question_id: question.id, content: "Did you try clean build?") }
+    let!(:my_comment) { user.comments.create(question_id: question.id, content: "Did you try clean build?") }
+    let!(:someone_comment) { someone.comments.create(question_id: question.id, content: "Yes I did but...") }
     before { visit lesson_question_path(lesson, question) }
 
     it "should have content about question" do
@@ -90,34 +92,57 @@ feature "Questions", type: :feature do
     end
 
     it "should display comment on question" do
-      expect(page).to have_selector 'div.chat-bubble', count:1
+      expect(page).to have_selector 'div.chat-bubble', count:2
     end
 
     describe "#comment" do
-      context "subscribing user" do
-        let(:content) { 'I tried clean build but ...' }
-        before {
-          Subscription.create(user_id: user.id, lesson_id: lesson.id);
-          visit current_path  # reload screen
-        }
-        it "should post comment" do
-          fill_in 'comment_content', with: content
-          click_button 'コメント'
-          expect(page).to have_selector 'div.chat-bubble', count:2
-          expect(page).to have_content content
+      describe "#show" do
+        context "subscribing user" do
+          let(:content) { 'I tried clean build but ...' }
+          before {
+            Subscription.create(user_id: user.id, lesson_id: lesson.id);
+            visit current_path  # reload screen
+          }
+          it "should post comment" do
+            fill_in 'comment_content', with: content
+            click_button 'コメント'
+            expect(page).to have_selector 'div.chat-bubble', count:3
+            expect(page).to have_content content
+          end
+        end
+        context "not subscribing user" do
+          it "should not see comment form" do
+            expect(page).not_to have_selector 'form.new_comment'
+          end
+          context "but editor" do
+            before {
+              EditorRelationship.create(lesson_id: lesson.id, user_id: user.id)
+              visit current_path
+            }
+            it "should see comment form" do
+              expect(page).to have_selector 'form.new_comment'
+            end
+          end
         end
       end
-      context "not subscribing user" do
-        it "should not see comment form" do
-          expect(page).not_to have_selector 'form.new_comment'
+      describe "#edit" do
+        context "by not author" do
+          it "should not enabled" do
+            within "#comment-#{someone_comment.id}" do
+              expect(page).not_to have_link '編集する'
+            end
+          end
         end
-        context "but editor" do
-          before {
-            EditorRelationship.create(lesson_id: lesson.id, user_id: user.id)
-            visit current_path
-          }
-          it "should see comment form" do
-            expect(page).to have_selector 'form.new_comment'
+        context "by author" do
+          let(:update_comment) { "Please check you have cleaned up." }
+          it "should update comment" do
+            within "#comment-#{my_comment.id}" do
+              click_on '編集する'
+              fill_in 'comment[content]', with: update_comment
+              click_on '保存する'
+              my_comment.reload
+              expect(my_comment.content).to eq update_comment
+            end
           end
         end
       end
