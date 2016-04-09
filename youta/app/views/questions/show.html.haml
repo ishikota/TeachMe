@@ -13,7 +13,11 @@
     %small.text-muted="#{@question.user.name} さんが質問しました"
   %hr
   .chat-box
-    = render @question.comments
+    - @question.comments.each do |comment|
+      - if comment.official?
+        = render partial: 'comments/comment_official', locals: { comment: comment }
+      - else
+        = render partial: 'comments/comment', locals: { comment: comment }
     - if have_right_to_comment(@lesson, current_user)
       %hr
       .col-xs-10.col-xs-offset-1

@@ -1,0 +1,8 @@
+.chat-area.comment-info
+  %span= "#{comment.user.name} さんがこの質問を"
+  - if comment.content == "close"
+    %span.btn.btn-xs.btn-success 解決済み
+    としました
+  - elsif comment.content == "open"
+    %span.btn.btn-xs.btn-warning 未解決
+    に戻しました
