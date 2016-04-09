@@ -34,6 +34,7 @@ feature "Questions", type: :feature do
         expect(page).to have_content 'Build error'
         expect(page).to have_content '足し算'
         expect(page).to have_content 'Kota Ishimoto さんが質問しました'
+        expect(page).to have_content '未解決'
         expect(page).to have_link nil, href: lesson_question_path(lesson, question1)
       end
     end
