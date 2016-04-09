@@ -1,0 +1,11 @@
+.chat-area
+  %div{ id: "comment-#{comment.id}", class: "comment-info" }
+    = comment.user.name
+    - if current_user == comment.user
+      = link_to '編集をやめる',
+            lesson_question_path(comment.question.lesson, comment.question), class: "comment-edit-link"
+  .chat-bubble.me.edit
+    = form_tag comment_path(comment), method: :put do
+      = hidden_field_tag 'comment[question_id]', comment.question.id
+      = text_area_tag 'comment[content]', comment.content.gsub("\n", "<br />").html_safe
+      = submit_tag '更新', class: "btn btn-success"

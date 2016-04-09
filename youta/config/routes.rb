@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resources :students, only: [:index, :create, :destroy]
     resources :tags, only:[:index, :create, :destroy]
   end
-  resources :comments, only: :create
+  resources :comments, only: [:create, :edit, :update]
 
   resources :users, only: [:show, :edit, :update]
   get 'management' => 'users#manage'
