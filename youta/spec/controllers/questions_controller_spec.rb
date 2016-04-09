@@ -90,7 +90,7 @@ RSpec.describe QuestionsController, :type => :request do
       end
       context "to false" do
         let(:solved) { false }
-        it "should create official close comment" do
+        it "should create official open comment" do
           put lesson_question_path(lesson, question1), params
           close_comment = Comment.find_by_official(true)
           expect(close_comment.content).to eq "open"
