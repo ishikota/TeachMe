@@ -1,9 +1,7 @@
 -# locals
 -# question : question to display info
 .question-main-info
-  - solved_btn_cls = ["btn", "btn-xs"]
-  - solved_btn_cls << (question.solved ? "btn-success" : "btn-warning")
-  %span{ class: solved_btn_cls }=question.solved ? "解決済み" : "未解決"
+  = render partial: 'questions/solved_tag', locals: { solved: question.solved?, size: 'xs' }
   %span.h4.question-title= question.title
   .pull-right
     - question.tags.each do |tag|

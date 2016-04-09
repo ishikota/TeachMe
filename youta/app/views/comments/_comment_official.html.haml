@@ -1,8 +1,8 @@
 .chat-area.comment-info
   %span= "#{comment.user.name} さんがこの質問を"
   - if comment.content == "close"
-    %span.btn.btn-xs.btn-success 解決済み
+    = render partial: 'questions/solved_tag', locals: { solved: true, size: 'xs' }
     としました
   - elsif comment.content == "open"
-    %span.btn.btn-xs.btn-warning 未解決
+    = render partial: 'questions/solved_tag', locals: { solved: false, size: 'xs' }
     に戻しました

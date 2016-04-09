@@ -1,0 +1,6 @@
+-# locals
+-# solved : if question is solved or not
+-# size : tag size
+- solved_cls = %w{btn} << "btn-#{size}" << (solved ? "btn-success" : "btn-warning")
+- solved_txt = solved ? "解決済み" : "未解決"
+%span{ class: solved_cls }= solved_txt
