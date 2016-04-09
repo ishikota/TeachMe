@@ -2,6 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.question-title {
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
 .question-top {
   margin-bottom: 0px;
   .btn-post {
