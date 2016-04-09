@@ -95,8 +95,13 @@ feature "Questions", type: :feature do
       expect(page).to have_selector 'div.chat-bubble', count:2
     end
 
-    describe "#show" do
+    describe "solve the question" do
+      before {
+        Subscription.create(user_id: user.id, lesson_id: lesson.id);
+        visit current_path  # reload screen
+      }
       it "should close question" do
+        expect(page).to have_content "未解決"
         click_button "解決済みにする"
         expect(page).to have_content "解決済み"
         expect(page).to have_content "#{user.name} さんがこの質問を 解決済み としました"
