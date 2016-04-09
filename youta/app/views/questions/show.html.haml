@@ -1,16 +1,7 @@
 .back-link
   = link_to "＜ #{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
 .container
-  .question-main-info
-    - solved_btn_cls = ["btn", "btn-xs"]
-    - solved_btn_cls << (@question.solved ? "btn-success" : "btn-warning")
-    %span{ class: solved_btn_cls }=@question.solved ? "解決済み" : "未解決"
-    %span.h4.question-title= @question.title
-    .pull-right
-      - @question.tags.each do |tag|
-        = link_to(tag.name, tag_link(tag), class: "btn btn-primary btn-sm question-tag")
-  .question-subinfo
-    %small.text-muted="#{@question.user.name} さんが質問しました"
+  = render partial: 'question_info', locals: { question: @question }
   %hr
   .chat-box
     - @question.comments.each do |comment|
