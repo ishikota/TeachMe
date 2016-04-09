@@ -22,3 +22,7 @@
           = f.hidden_field :user_id, value: current_user.id
           = f.text_area :content, placeholder: "気軽にコメントしてみましょう．"
           = f.submit 'コメント', class: 'btn btn-success'
+
+    = form_for([@lesson, @question]) do |f|
+      = f.hidden_field "solved", value: !@question.solved
+      = f.submit '解決済みにする'
