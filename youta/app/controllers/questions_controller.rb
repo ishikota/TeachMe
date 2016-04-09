@@ -43,6 +43,10 @@ class QuestionsController < ApplicationController
     @lesson = Lesson.find(params[:lesson_id])
     @question = Question.find(params[:id])
     if @question.update_attributes(question_params)
+      if question_params.has_key? :solved
+        content = @question.solved ? "close" : "open"
+        Comment.create(content: content, question_id: @question.id, user_id: current_user.id, official: true)
+      end
       redirect_to lesson_question_path(@lesson, @question)
     end
   end
