@@ -20,7 +20,8 @@ class QuestionsController < ApplicationController
 
   def create
     @lesson = Lesson.find(params[:lesson_id])
-    @question = Question.new(question_params)
+    @question = Question.new(question_params
+                             .merge( user_id: current_user.id, lesson_id: params[:lesson_id] ))
     q_detail = params[:comment][:content]
     if q_detail.present? && @question.save
       @question.tag_relationships.create(tag_id: params[:question][:tags].to_i)
@@ -38,10 +39,22 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
+  def update
+    @lesson = Lesson.find(params[:lesson_id])
+    @question = Question.find(params[:id])
+    if @question.update_attributes(question_params)
+      if question_params.has_key? :solved
+        content = @question.solved ? "close" : "open"
+        Comment.create(content: content, question_id: @question.id, user_id: current_user.id, official: true)
+      end
+      redirect_to lesson_question_path(@lesson, @question)
+    end
+  end
+
+
   private
     def question_params
-      params.require(:question).permit(:title)
-          .merge( user_id: current_user.id, lesson_id: params[:lesson_id] )
+      params.require(:question).permit(:title, :solved)
     end
 
 end

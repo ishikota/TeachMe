@@ -1,25 +1,16 @@
 .back-link
   = link_to "＜ #{@lesson.title} の質問一覧に戻る", lesson_questions_path(@lesson)
 .container
-  .question-main-info
-    %span.h4.question-title= @question.title
-    .pull-right
-      - @question.tags.each do |tag|
-        = link_to(tag.name, tag_link(tag), class: "btn btn-primary btn-sm question-tag")
-  .question-subinfo
-    %small.text-muted="#{@question.user.name} さんが質問しました"
+  = render partial: 'questions/question_info', locals: { question: @question }
   %hr
   .chat-box
     - @question.comments.each do |comment|
-      - if comment == @comment
+      - if comment.official?
+        = render partial: 'comment_official', locals: { comment: comment }
+      - elsif comment == @comment
         = render partial: 'comment_edit', locals: { comment: comment }
       - else
         = render partial: 'comment', locals: { comment: comment }
     - if have_right_to_comment(@lesson, current_user)
       %hr
-      .col-xs-10.col-xs-offset-1
-        = form_for(Comment.new) do |f|
-          = f.hidden_field :question_id, value: @question.id
-          = f.hidden_field :user_id, value: current_user.id
-          = f.text_area :content, placeholder: "気軽にコメントしてみましょう．"
-          = f.submit 'コメント', class: 'btn btn-success'
+      = render partial: 'comments/comment_form', locals: { question: @question }

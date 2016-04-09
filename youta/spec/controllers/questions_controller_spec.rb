@@ -77,4 +77,26 @@ RSpec.describe QuestionsController, :type => :request do
     end
   end
 
+  describe "#update" do
+    let(:params) { { question: { solved: solved } } }
+    describe "solved" do
+      context "to true" do
+        let(:solved) { true }
+        it "should create official close comment" do
+          put lesson_question_path(lesson, question1), params
+          close_comment = Comment.find_by_official(true)
+          expect(close_comment.content).to eq "close"
+        end
+      end
+      context "to false" do
+        let(:solved) { false }
+        it "should create official open comment" do
+          put lesson_question_path(lesson, question1), params
+          close_comment = Comment.find_by_official(true)
+          expect(close_comment.content).to eq "open"
+        end
+      end
+    end
+  end
+
 end

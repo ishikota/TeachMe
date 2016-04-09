@@ -1,5 +1,6 @@
 %li{ id: "question-#{question.id}", class: ["question-row", "list-group-item"] }
   .question-main-info
+    = render partial: 'questions/solved_tag', locals: { solved: question.solved?, size: 'xs' }
     %span.h4.question-title= link_to question.title, lesson_question_path(question.lesson, question)
     .pull-right
       - question.tags.each do |tag|

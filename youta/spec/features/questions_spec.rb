@@ -9,32 +9,40 @@ feature "Questions", type: :feature do
 
   let!(:user) { FactoryGirl.create(:user) }
   let!(:lesson) { FactoryGirl.create(:lesson) }
-  let!(:tag_tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
-  let!(:tag_hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
 
   before { log_in(user) }
 
-  it 'visits page when no questions' do
-    visit lesson_questions_path(lesson)
-    expect(page).to have_content 'hoge の質問'
-    expect(page).to have_content 'まだ質問が投稿されていません．'
-    expect(page).to have_link '質問する'
+  describe "when no question is posted" do
+    it 'should display empty message' do
+      visit lesson_questions_path(lesson)
+      expect(page).to have_content 'hoge の質問'
+      expect(page).to have_content 'まだ質問が投稿されていません．'
+      expect(page).to have_link '質問する'
+    end
   end
 
   describe "index page" do
     let!(:question1) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
+    let!(:tag_tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
+    let!(:tag_hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
     before { question1.tag_relationships.create(tag_id: tag_tashizan.id) }
-    it "should have question about 'Build error'" do
-      visit lesson_questions_path(lesson)
-      expect(page).to have_content 'Build error'
-      expect(page).to have_content '足し算'
-      expect(page).to have_content 'Kota Ishimoto さんが質問しました'
-      expect(page).to have_link nil, href: lesson_question_path(lesson, question1)
+
+    describe "page content" do
+
+      it "should have question about 'Build error'" do
+        visit lesson_questions_path(lesson)
+        expect(page).to have_content 'Build error'
+        expect(page).to have_content '足し算'
+        expect(page).to have_content 'Kota Ishimoto さんが質問しました'
+        expect(page).to have_content '未解決'
+        expect(page).to have_link nil, href: lesson_question_path(lesson, question1)
+      end
     end
 
     describe "tag fileter" do
       let!(:question2) { user.questions.create(title:"NPE", lesson_id: lesson.id) }
       before { question2.tag_relationships.create(tag_id: tag_hikizan.id) }
+
       context "when filter is off" do
         it "should display all questions" do
           visit lesson_questions_path(lesson)
@@ -46,6 +54,7 @@ feature "Questions", type: :feature do
           end
         end
       end
+
       context "when filter is on" do
         before { visit lesson_questions_path(lesson, tag: tag_hikizan.name) }
         it "should filter question to display" do
@@ -60,14 +69,15 @@ feature "Questions", type: :feature do
           expect(current_url).to eq lesson_questions_url(lesson)
         end
       end
+
     end
   end
 
   describe "new page" do
-    before {
-      visit new_lesson_question_path(lesson)
-      expect(page).to have_content "#{lesson.title} の質問の作成"
-    }
+    let!(:tag_tashizan) { lesson.tags.create(FactoryGirl.attributes_for(:tashizan)) }
+    let!(:tag_hikizan) { lesson.tags.create(FactoryGirl.attributes_for(:hikizan)) }
+    before { visit new_lesson_question_path(lesson) }
+
     it "should create new question" do
       fill_in 'タイトル', with: '5-2が分かりません'
       select '引き算', from: '授業項目'
@@ -80,11 +90,12 @@ feature "Questions", type: :feature do
   end
 
   describe "#show" do
-    let!(:someone) { FactoryGirl.create(:taro) }
     let!(:question) { user.questions.create(title:"Build error", lesson_id: lesson.id) }
-    let!(:my_comment) { user.comments.create(question_id: question.id, content: "Did you try clean build?") }
-    let!(:someone_comment) { someone.comments.create(question_id: question.id, content: "Yes I did but...") }
-    before { visit lesson_question_path(lesson, question) }
+    let(:comment) { "Dis you try clean build?" }
+    before {
+      user.comments.create(question_id: question.id, content: comment)
+      visit lesson_question_path(lesson, question)
+    }
 
     it "should have content about question" do
       expect(page).to have_content question.title
@@ -92,65 +103,37 @@ feature "Questions", type: :feature do
     end
 
     it "should display comment on question" do
-      expect(page).to have_selector 'div.chat-bubble', count:2
+      expect(page).to have_content comment
     end
 
-    describe "#comment" do
-      describe "#show" do
-        context "subscribing user" do
-          let(:content) { 'I tried clean build but ...' }
-          before {
-            Subscription.create(user_id: user.id, lesson_id: lesson.id);
-            visit current_path  # reload screen
-          }
-          it "should post comment" do
-            fill_in 'comment_content', with: content
-            click_button 'コメント'
-            expect(page).to have_selector 'div.chat-bubble', count:3
-            expect(page).to have_content content
-          end
-        end
-        context "not subscribing user" do
-          it "should not see comment form" do
-            expect(page).not_to have_selector 'form.new_comment'
-          end
-          context "but editor" do
-            before {
-              EditorRelationship.create(lesson_id: lesson.id, user_id: user.id)
-              visit current_path
-            }
-            it "should see comment form" do
-              expect(page).to have_selector 'form.new_comment'
-            end
-          end
+    describe "click solved button" do
+      before {
+        Subscription.create(user_id: user.id, lesson_id: lesson.id);
+        visit current_path  # reload screen
+      }
+
+      context "when question is not solved" do
+        it "should close question" do
+          click_button "解決済みにする"
+          expect(page).to have_content "解決済み"
+          expect(page).to have_content "#{user.name} さんがこの質問を 解決済み としました"
         end
       end
-      describe "#edit" do
+
+      context "when question is solved" do
         before {
-          Subscription.create(user_id: user.id, lesson_id: lesson.id);
-          visit current_path  # reload screen
+          question.toggle(:solved).save
+          visit current_path
         }
-        context "by not author" do
-          it "should not enabled" do
-            within "#comment-#{someone_comment.id}" do
-              expect(page).not_to have_link '編集する'
-            end
-          end
-        end
-        context "by author" do
-          let(:update_comment) { "Please check you have cleaned up." }
-          it "should update comment" do
-            click_on '編集する'
-            within '.chat-bubble.me.edit' do
-              fill_in 'comment_content', with: update_comment
-            end
-            click_on '更新'
-            my_comment.reload
-            expect(my_comment.content).to eq update_comment
-          end
+
+        it "should re-open question" do
+          click_button "未解決に戻す"
+          expect(page).to have_content "未解決"
+          expect(page).to have_content "#{user.name} さんがこの質問を 未解決 に戻しました"
         end
       end
     end
+
   end
 
   describe "authentication" do

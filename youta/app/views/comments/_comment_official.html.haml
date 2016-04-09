@@ -1,0 +1,8 @@
+.chat-area.comment-info
+  %span= "#{comment.user.name} さんがこの質問を"
+  - if comment.content == "close"
+    = render partial: 'questions/solved_tag', locals: { solved: true, size: 'xs' }
+    としました
+  - elsif comment.content == "open"
+    = render partial: 'questions/solved_tag', locals: { solved: false, size: 'xs' }
+    に戻しました
