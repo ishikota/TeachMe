@@ -20,14 +20,4 @@
         = render partial: 'comments/comment', locals: { comment: comment }
     - if have_right_to_comment(@lesson, current_user)
       %hr
-      .col-xs-10.col-xs-offset-1.comment-form
-        = form_for(Comment.new) do |f|
-          = f.hidden_field :question_id, value: @question.id
-          = f.hidden_field :user_id, value: current_user.id
-          = f.text_area :content, placeholder: "気軽にコメントしてみましょう．"
-          .pull-right= f.submit 'コメント', class: 'btn btn-success'
-
-        = form_for([@lesson, @question]) do |f|
-          = f.hidden_field "solved", value: !@question.solved
-          - text = @question.solved ? "未解決に戻す" : "解決済みにする"
-          .pull-right.space-right= f.submit text, class: 'btn btn-default'
+      = render partial: 'comments/comment_form', locals: { question: @question }
